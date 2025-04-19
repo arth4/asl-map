@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Interactive Grid with GIFs</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+  
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: sans-serif;
+      background: #f9f9f9;
+      color: #222;
+    }
+  
+    #container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .main-content {
+      display: flex;
+      align-items: flex-start;
+    }
+  
+    .grid-wrapper {
+      display: flex;
+      flex-direction: row;
+      margin-right: 20px; /* Margin between grid and panel */
+      transform: scale(0.75); /* Scale grid by 75% (adjust further if needed) */
+    }
+  
+    .y-axis-title {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      text-align: center;
+      margin-right: 16px;
+      font-weight: bold;
+      font-size: 14px;
+      height: calc(30 * 24px + 29 * 2px); /* 30 rows of 24px, plus 29 gaps of 2px */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+    .grid-with-x {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    #grid-container {
+      background-color: #ddd;
+      width: calc(20 * 24px + 19 * 2px); /* 20 columns of 24px, plus 19 gaps of 2px */
+      height: calc(30 * 24px + 29 * 2px); /* 30 rows of 24px, plus 29 gaps of 2px */
+      padding: 4px;
+      display: flex;
+      justify-content: center;
+    }
+  
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(20, 1fr);  /* 20 columns */
+      grid-template-rows: repeat(30, 1fr);     /* 30 rows */
+      gap: 5px;  /* Adjust the gap between cells */
+      margin: 20px;
+      position: relative;
+      height: calc(30 * 24px);  /* Adjust grid height */
+      width: calc(20 * 24px);   /* Adjust grid width */
+      background-color: #ccc;   /* Grey background */
+      transform-origin: top left; /* Keep top-left corner as anchor */
+    }
+  
+    .x-axis-title {
+      margin-top: 16px;
+      font-weight: bold;
+      font-size: 14px;
+      text-align: center;
+      width: calc(20 * 24px + 19 * 2px); /* Same width as grid */
+    }
+  
+    .cell {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+      border: 1px solid #999;
+      position: relative;
+      width: 24px;  /* Smaller cells (24px) */
+      height: 24px; /* Smaller cells (24px) */
+      cursor: pointer;
+      overflow: hidden;
+    }
+  
+    .cell:hover {
+      background: #e7f3ff;
+    }
+  
+    .cell.selected {
+      background: #bee3ff;
+    }
+  
+    .circles {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      width: 100%;
+      height: 100%;
+    }
+  
+    .circle {
+      background-color: #4caf50;  /* Green color for circles */
+      border-radius: 50%;
+      width: 8px;  /* Smaller circles */
+      height: 8px; /* Smaller circles */
+      margin: 2px;
+    }
+  
+    #gif-panel {
+      width: 300px;
+      margin-left: 32px;
+      background: #f4f4f4;
+      padding: 16px;
+      overflow-y: auto;
+      border: 1px solid #ccc;
+      height: calc(30 * 24px + 29 * 2px); /* Same height as grid */
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+  
+    #gif-panel img {
+      width: 100%;
+      margin-bottom: 10px;
+      border-radius: 6px;
+    }
+  
+    #gif-panel h3, #gif-panel p {
+      margin-top: 0;
+      color: #333;
+    }
+  </style>
+  
+</head>
+<body>
+  <div id="container">
+    <div class="main-content">
+      <div class="grid-wrapper">
+        <div class="y-axis-title">Y Axis</div>
+        <div class="grid-with-x">
+          <div id="grid-container">
+            <div id="grid"></div>
+          </div>
+          <div class="x-axis-title">X Axis</div>
+        </div>
+      </div>
+
+      <div id="gif-panel">
+        <h3>Hover over a cell to view GIFs</h3>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const grid = document.getElementById("grid");
+    const gifPanel = document.getElementById("gif-panel");
+    let selectedCell = null;
+  
+    // Directly embedded JSON data
+    const gifsData = {
+  "0_0": [
+    "coord_0_0\\coord_0_0_0.gif",
+    "coord_0_0\\coord_0_0_1.gif",
+    "coord_0_0\\coord_0_0_2.gif",
+    "coord_0_0\\coord_0_0_3.gif",
+    "coord_0_0\\coord_0_0_4.gif"
+  ],
+  "0_1": [
+    "coord_0_1\\coord_0_1_0.gif",
+    "coord_0_1\\coord_0_1_1.gif",
+    "coord_0_1\\coord_0_1_2.gif",
+    "coord_0_1\\coord_0_1_3.gif",
+    "coord_0_1\\coord_0_1_4.gif"
+  ],
+  "0_10": [
+    "coord_0_10\\coord_0_10_0.gif",
+    "coord_0_10\\coord_0_10_1.gif",
+    "coord_0_10\\coord_0_10_2.gif",
+    "coord_0_10\\coord_0_10_3.gif",
+    "coord_0_10\\coord_0_10_4.gif"
+  ],
+  "0_11": [
+    "coord_0_11\\coord_0_11_0.gif",
+    "coord_0_11\\coord_0_11_1.gif",
+    "coord_0_11\\coord_0_11_2.gif",
+    "coord_0_11\\coord_0_11_3.gif",
+    "coord_0_11\\coord_0_11_4.gif"
+  ],
+  "0_12": [
+    "coord_0_12\\coord_0_12_0.gif",
+    "coord_0_12\\coord_0_12_1.gif",
+    "coord_0_12\\coord_0_12_2.gif",
+    "coord_0_12\\coord_0_12_3.gif",
+    "coord_0_12\\coord_0_12_4.gif"
+  ],
+  "0_13": [
+    "coord_0_13\\coord_0_13_0.gif",
+    "coord_0_13\\coord_0_13_1.gif",
+    "coord_0_13\\coord_0_13_2.gif",
+    "coord_0_13\\coord_0_13_3.gif",
+    "coord_0_13\\coord_0_13_4.gif"
+  ],
+  "0_14": [
+    "coord_0_14\\coord_0_14_0.gif",
+    "coord_0_14\\coord_0_14_1.gif",
+    "coord_0_14\\coord_0_14_2.gif",
+    "coord_0_14\\coord_0_14_3.gif",
+    "coord_0_14\\coord_0_14_4.gif"
+  ],
+  "0_15": [
+    "coord_0_15\\coord_0_15_0.gif",
+    "coord_0_15\\coord_0_15_1.gif",
+    "coord_0_15\\coord_0_15_2.gif",
+    "coord_0_15\\coord_0_15_3.gif",
+    "coord_0_15\\coord_0_15_4.gif"
+  ],
+  "0_16": [
+    "coord_0_16\\coord_0_16_0.gif",
+    "coord_0_16\\coord_0_16_1.gif",
+    "coord_0_16\\coord_0_16_2.gif",
+    "coord_0_16\\coord_0_16_3.gif",
+    "coord_0_16\\coord_0_16_4.gif"
+  ],
+  "0_17": [
+    "coord_0_17\\coord_0_17_0.gif",
+    "coord_0_17\\coord_0_17_1.gif",
+    "coord_0_17\\coord_0_17_2.gif",
+    "coord_0_17\\coord_0_17_3.gif",
+    "coord_0_17\\coord_0_17_4.gif"
+  ],
+  "0_18": [
+    "coord_0_18\\coord_0_18_0.gif",
+    "coord_0_18\\coord_0_18_1.gif",
+    "coord_0_18\\coord_0_18_2.gif",
+    "coord_0_18\\coord_0_18_3.gif",
+    "coord_0_18\\coord_0_18_4.gif"
+  ],
+  "0_19": [
+    "coord_0_19\\coord_0_19_0.gif",
+    "coord_0_19\\coord_0_19_1.gif",
+    "coord_0_19\\coord_0_19_2.gif",
+    "coord_0_19\\coord_0_19_3.gif",
+    "coord_0_19\\coord_0_19_4.gif"
+  ],
+  "0_2": [
+    "coord_0_2\\coord_0_2_0.gif",
+    "coord_0_2\\coord_0_2_1.gif",
+    "coord_0_2\\coord_0_2_2.gif",
+    "coord_0_2\\coord_0_2_3.gif"
+  ],
+  "0_20": [
+    "coord_0_20\\coord_0_20_0.gif",
+    "coord_0_20\\coord_0_20_1.gif",
+    "coord_0_20\\coord_0_20_2.gif",
+    "coord_0_20\\coord_0_20_3.gif",
+    "coord_0_20\\coord_0_20_4.gif"
+  ],
+  "0_21": [
+    "coord_0_21\\coord_0_21_0.gif",
+    "coord_0_21\\coord_0_21_1.gif",
+    "coord_0_21\\coord_0_21_2.gif",
+    "coord_0_21\\coord_0_21_3.gif",
+    "coord_0_21\\coord_0_21_4.gif"
+  ],
+  "0_22": [
+    "coord_0_22\\coord_0_22_0.gif",
+    "coord_0_22\\coord_0_22_1.gif",
+    "coord_0_22\\coord_0_22_2.gif",
+    "coord_0_22\\coord_0_22_3.gif",
+    "coord_0_22\\coord_0_22_4.gif"
+  ],
+  "0_23": [
+    "coord_0_23\\coord_0_23_0.gif",
+    "coord_0_23\\coord_0_23_1.gif",
+    "coord_0_23\\coord_0_23_2.gif",
+    "coord_0_23\\coord_0_23_3.gif",
+    "coord_0_23\\coord_0_23_4.gif"
+  ],
+  "0_24": [
+    "coord_0_24\\coord_0_24_0.gif",
+    "coord_0_24\\coord_0_24_1.gif",
+    "coord_0_24\\coord_0_24_2.gif",
+    "coord_0_24\\coord_0_24_3.gif",
+    "coord_0_24\\coord_0_24_4.gif"
+  ],
+  "0_25": [
+    "coord_0_25\\coord_0_25_0.gif",
+    "coord_0_25\\coord_0_25_1.gif",
+    "coord_0_25\\coord_0_25_2.gif",
+    "coord_0_25\\coord_0_25_3.gif",
+    "coord_0_25\\coord_0_25_4.gif"
+  ],
+  "0_26": [
+    "coord_0_26\\coord_0_26_0.gif",
+    "coord_0_26\\coord_0_26_1.gif",
+    "coord_0_26\\coord_0_26_2.gif",
+    "coord_0_26\\coord_0_26_3.gif",
+    "coord_0_26\\coord_0_26_4.gif"
+  ],
+  "0_27": [
+    "coord_0_27\\coord_0_27_0.gif",
+    "coord_0_27\\coord_0_27_1.gif",
+    "coord_0_27\\coord_0_27_2.gif",
+    "coord_0_27\\coord_0_27_3.gif",
+    "coord_0_27\\coord_0_27_4.gif"
+  ],
+  "0_28": [
+    "coord_0_28\\coord_0_28_0.gif",
+    "coord_0_28\\coord_0_28_1.gif",
+    "coord_0_28\\coord_0_28_2.gif",
+    "coord_0_28\\coord_0_28_3.gif",
+    "coord_0_28\\coord_0_28_4.gif"
+  ],
+  "0_29": [
+    "coord_0_29\\coord_0_29_0.gif",
+    "coord_0_29\\coord_0_29_1.gif",
+    "coord_0_29\\coord_0_29_2.gif",
+    "coord_0_29\\coord_0_29_3.gif",
+    "coord_0_29\\coord_0_29_4.gif"
+  ],
+  "0_3": [
+    "coord_0_3\\coord_0_3_0.gif",
+    "coord_0_3\\coord_0_3_1.gif",
+    "coord_0_3\\coord_0_3_2.gif",
+    "coord_0_3\\coord_0_3_3.gif",
+    "coord_0_3\\coord_0_3_4.gif"
+  ],
+  "0_4": [
+    "coord_0_4\\coord_0_4_0.gif",
+    "coord_0_4\\coord_0_4_1.gif",
+    "coord_0_4\\coord_0_4_2.gif",
+    "coord_0_4\\coord_0_4_3.gif",
+    "coord_0_4\\coord_0_4_4.gif"
+  ],
+  "0_5": [
+    "coord_0_5\\coord_0_5_0.gif",
+    "coord_0_5\\coord_0_5_1.gif",
+    "coord_0_5\\coord_0_5_2.gif",
+    "coord_0_5\\coord_0_5_3.gif",
+    "coord_0_5\\coord_0_5_4.gif"
+  ],
+  "0_6": [
+    "coord_0_6\\coord_0_6_0.gif",
+    "coord_0_6\\coord_0_6_1.gif",
+    "coord_0_6\\coord_0_6_2.gif",
+    "coord_0_6\\coord_0_6_3.gif",
+    "coord_0_6\\coord_0_6_4.gif"
+  ],
+  "0_7": [
+    "coord_0_7\\coord_0_7_0.gif",
+    "coord_0_7\\coord_0_7_1.gif",
+    "coord_0_7\\coord_0_7_2.gif",
+    "coord_0_7\\coord_0_7_3.gif",
+    "coord_0_7\\coord_0_7_4.gif"
+  ],
+  "0_8": [
+    "coord_0_8\\coord_0_8_0.gif",
+    "coord_0_8\\coord_0_8_1.gif",
+    "coord_0_8\\coord_0_8_2.gif",
+    "coord_0_8\\coord_0_8_3.gif",
+    "coord_0_8\\coord_0_8_4.gif"
+  ],
+  "0_9": [
+    "coord_0_9\\coord_0_9_0.gif",
+    "coord_0_9\\coord_0_9_1.gif",
+    "coord_0_9\\coord_0_9_2.gif",
+    "coord_0_9\\coord_0_9_3.gif",
+    "coord_0_9\\coord_0_9_4.gif"
+  ],
+  "11_14": [
+    "coord_11_14\\coord_11_14_0.gif"
+  ],
+  "13_7": [
+    "coord_13_7\\coord_13_7_0.gif",
+    "coord_13_7\\coord_13_7_1.gif"
+  ],
+  "19_0": [
+    "coord_19_0\\coord_19_0_0.gif",
+    "coord_19_0\\coord_19_0_1.gif",
+    "coord_19_0\\coord_19_0_2.gif",
+    "coord_19_0\\coord_19_0_3.gif",
+    "coord_19_0\\coord_19_0_4.gif"
+  ],
+  "19_1": [
+    "coord_19_1\\coord_19_1_0.gif",
+    "coord_19_1\\coord_19_1_1.gif",
+    "coord_19_1\\coord_19_1_2.gif",
+    "coord_19_1\\coord_19_1_3.gif",
+    "coord_19_1\\coord_19_1_4.gif"
+  ],
+  "19_10": [
+    "coord_19_10\\coord_19_10_0.gif",
+    "coord_19_10\\coord_19_10_1.gif",
+    "coord_19_10\\coord_19_10_2.gif",
+    "coord_19_10\\coord_19_10_3.gif",
+    "coord_19_10\\coord_19_10_4.gif"
+  ],
+  "19_11": [
+    "coord_19_11\\coord_19_11_0.gif",
+    "coord_19_11\\coord_19_11_1.gif",
+    "coord_19_11\\coord_19_11_2.gif",
+    "coord_19_11\\coord_19_11_3.gif",
+    "coord_19_11\\coord_19_11_4.gif"
+  ],
+  "19_12": [
+    "coord_19_12\\coord_19_12_0.gif",
+    "coord_19_12\\coord_19_12_1.gif",
+    "coord_19_12\\coord_19_12_2.gif",
+    "coord_19_12\\coord_19_12_3.gif",
+    "coord_19_12\\coord_19_12_4.gif"
+  ],
+  "19_13": [
+    "coord_19_13\\coord_19_13_0.gif",
+    "coord_19_13\\coord_19_13_1.gif",
+    "coord_19_13\\coord_19_13_2.gif",
+    "coord_19_13\\coord_19_13_3.gif",
+    "coord_19_13\\coord_19_13_4.gif"
+  ],
+  "19_14": [
+    "coord_19_14\\coord_19_14_0.gif",
+    "coord_19_14\\coord_19_14_1.gif",
+    "coord_19_14\\coord_19_14_2.gif",
+    "coord_19_14\\coord_19_14_3.gif",
+    "coord_19_14\\coord_19_14_4.gif"
+  ],
+  "19_15": [
+    "coord_19_15\\coord_19_15_0.gif",
+    "coord_19_15\\coord_19_15_1.gif",
+    "coord_19_15\\coord_19_15_2.gif",
+    "coord_19_15\\coord_19_15_3.gif",
+    "coord_19_15\\coord_19_15_4.gif"
+  ],
+  "19_16": [
+    "coord_19_16\\coord_19_16_0.gif",
+    "coord_19_16\\coord_19_16_1.gif",
+    "coord_19_16\\coord_19_16_2.gif",
+    "coord_19_16\\coord_19_16_3.gif",
+    "coord_19_16\\coord_19_16_4.gif"
+  ],
+  "19_17": [
+    "coord_19_17\\coord_19_17_0.gif",
+    "coord_19_17\\coord_19_17_1.gif",
+    "coord_19_17\\coord_19_17_2.gif",
+    "coord_19_17\\coord_19_17_3.gif",
+    "coord_19_17\\coord_19_17_4.gif"
+  ],
+  "19_18": [
+    "coord_19_18\\coord_19_18_0.gif",
+    "coord_19_18\\coord_19_18_1.gif",
+    "coord_19_18\\coord_19_18_2.gif",
+    "coord_19_18\\coord_19_18_3.gif",
+    "coord_19_18\\coord_19_18_4.gif"
+  ],
+  "19_19": [
+    "coord_19_19\\coord_19_19_0.gif",
+    "coord_19_19\\coord_19_19_1.gif",
+    "coord_19_19\\coord_19_19_2.gif",
+    "coord_19_19\\coord_19_19_3.gif",
+    "coord_19_19\\coord_19_19_4.gif"
+  ],
+  "19_2": [
+    "coord_19_2\\coord_19_2_0.gif",
+    "coord_19_2\\coord_19_2_1.gif",
+    "coord_19_2\\coord_19_2_2.gif",
+    "coord_19_2\\coord_19_2_3.gif",
+    "coord_19_2\\coord_19_2_4.gif"
+  ],
+  "19_20": [
+    "coord_19_20\\coord_19_20_0.gif",
+    "coord_19_20\\coord_19_20_1.gif",
+    "coord_19_20\\coord_19_20_2.gif",
+    "coord_19_20\\coord_19_20_3.gif",
+    "coord_19_20\\coord_19_20_4.gif"
+  ],
+  "19_21": [
+    "coord_19_21\\coord_19_21_0.gif",
+    "coord_19_21\\coord_19_21_1.gif",
+    "coord_19_21\\coord_19_21_2.gif",
+    "coord_19_21\\coord_19_21_3.gif",
+    "coord_19_21\\coord_19_21_4.gif"
+  ],
+  "19_22": [
+    "coord_19_22\\coord_19_22_0.gif",
+    "coord_19_22\\coord_19_22_1.gif",
+    "coord_19_22\\coord_19_22_2.gif",
+    "coord_19_22\\coord_19_22_3.gif",
+    "coord_19_22\\coord_19_22_4.gif"
+  ],
+  "19_23": [
+    "coord_19_23\\coord_19_23_0.gif",
+    "coord_19_23\\coord_19_23_1.gif",
+    "coord_19_23\\coord_19_23_2.gif",
+    "coord_19_23\\coord_19_23_3.gif",
+    "coord_19_23\\coord_19_23_4.gif"
+  ],
+  "19_24": [
+    "coord_19_24\\coord_19_24_0.gif",
+    "coord_19_24\\coord_19_24_1.gif",
+    "coord_19_24\\coord_19_24_2.gif",
+    "coord_19_24\\coord_19_24_3.gif",
+    "coord_19_24\\coord_19_24_4.gif"
+  ],
+  "19_25": [
+    "coord_19_25\\coord_19_25_0.gif",
+    "coord_19_25\\coord_19_25_1.gif",
+    "coord_19_25\\coord_19_25_2.gif",
+    "coord_19_25\\coord_19_25_3.gif",
+    "coord_19_25\\coord_19_25_4.gif"
+  ],
+  "19_26": [
+    "coord_19_26\\coord_19_26_0.gif",
+    "coord_19_26\\coord_19_26_1.gif",
+    "coord_19_26\\coord_19_26_2.gif",
+    "coord_19_26\\coord_19_26_3.gif",
+    "coord_19_26\\coord_19_26_4.gif"
+  ],
+  "19_27": [
+    "coord_19_27\\coord_19_27_0.gif",
+    "coord_19_27\\coord_19_27_1.gif",
+    "coord_19_27\\coord_19_27_2.gif",
+    "coord_19_27\\coord_19_27_3.gif",
+    "coord_19_27\\coord_19_27_4.gif"
+  ],
+  "19_28": [
+    "coord_19_28\\coord_19_28_0.gif",
+    "coord_19_28\\coord_19_28_1.gif",
+    "coord_19_28\\coord_19_28_2.gif",
+    "coord_19_28\\coord_19_28_3.gif",
+    "coord_19_28\\coord_19_28_4.gif"
+  ],
+  "19_29": [
+    "coord_19_29\\coord_19_29_0.gif",
+    "coord_19_29\\coord_19_29_1.gif",
+    "coord_19_29\\coord_19_29_2.gif",
+    "coord_19_29\\coord_19_29_3.gif",
+    "coord_19_29\\coord_19_29_4.gif"
+  ],
+  "19_3": [
+    "coord_19_3\\coord_19_3_0.gif",
+    "coord_19_3\\coord_19_3_1.gif",
+    "coord_19_3\\coord_19_3_2.gif",
+    "coord_19_3\\coord_19_3_3.gif",
+    "coord_19_3\\coord_19_3_4.gif"
+  ],
+  "19_4": [
+    "coord_19_4\\coord_19_4_0.gif",
+    "coord_19_4\\coord_19_4_1.gif",
+    "coord_19_4\\coord_19_4_2.gif",
+    "coord_19_4\\coord_19_4_3.gif",
+    "coord_19_4\\coord_19_4_4.gif"
+  ],
+  "19_5": [
+    "coord_19_5\\coord_19_5_0.gif",
+    "coord_19_5\\coord_19_5_1.gif",
+    "coord_19_5\\coord_19_5_2.gif",
+    "coord_19_5\\coord_19_5_3.gif",
+    "coord_19_5\\coord_19_5_4.gif"
+  ],
+  "19_6": [
+    "coord_19_6\\coord_19_6_0.gif",
+    "coord_19_6\\coord_19_6_1.gif",
+    "coord_19_6\\coord_19_6_2.gif",
+    "coord_19_6\\coord_19_6_3.gif",
+    "coord_19_6\\coord_19_6_4.gif"
+  ],
+  "19_7": [
+    "coord_19_7\\coord_19_7_0.gif",
+    "coord_19_7\\coord_19_7_1.gif",
+    "coord_19_7\\coord_19_7_2.gif",
+    "coord_19_7\\coord_19_7_3.gif",
+    "coord_19_7\\coord_19_7_4.gif"
+  ],
+  "19_8": [
+    "coord_19_8\\coord_19_8_0.gif",
+    "coord_19_8\\coord_19_8_1.gif",
+    "coord_19_8\\coord_19_8_2.gif",
+    "coord_19_8\\coord_19_8_3.gif",
+    "coord_19_8\\coord_19_8_4.gif"
+  ],
+  "19_9": [
+    "coord_19_9\\coord_19_9_0.gif",
+    "coord_19_9\\coord_19_9_1.gif",
+    "coord_19_9\\coord_19_9_2.gif",
+    "coord_19_9\\coord_19_9_3.gif",
+    "coord_19_9\\coord_19_9_4.gif"
+  ],
+  "1_1": [
+    "coord_1_1\\coord_1_1_0.gif"
+  ],
+  "1_10": [
+    "coord_1_10\\coord_1_10_0.gif",
+    "coord_1_10\\coord_1_10_1.gif"
+  ],
+  "1_11": [
+    "coord_1_11\\coord_1_11_0.gif",
+    "coord_1_11\\coord_1_11_1.gif"
+  ],
+  "1_12": [
+    "coord_1_12\\coord_1_12_0.gif",
+    "coord_1_12\\coord_1_12_1.gif"
+  ],
+  "1_13": [
+    "coord_1_13\\coord_1_13_0.gif"
+  ],
+  "1_5": [
+    "coord_1_5\\coord_1_5_0.gif",
+    "coord_1_5\\coord_1_5_1.gif"
+  ],
+  "1_7": [
+    "coord_1_7\\coord_1_7_0.gif",
+    "coord_1_7\\coord_1_7_1.gif"
+  ],
+  "1_9": [
+    "coord_1_9\\coord_1_9_0.gif",
+    "coord_1_9\\coord_1_9_1.gif"
+  ],
+  "2_12": [
+    "coord_2_12\\coord_2_12_0.gif"
+  ],
+  "3_6": [
+    "coord_3_6\\coord_3_6_0.gif"
+  ],
+  "3_7": [
+    "coord_3_7\\coord_3_7_0.gif",
+    "coord_3_7\\coord_3_7_1.gif",
+    "coord_3_7\\coord_3_7_2.gif",
+    "coord_3_7\\coord_3_7_3.gif",
+    "coord_3_7\\coord_3_7_4.gif"
+  ],
+  "3_8": [
+    "coord_3_8\\coord_3_8_0.gif",
+    "coord_3_8\\coord_3_8_1.gif",
+    "coord_3_8\\coord_3_8_2.gif"
+  ],
+  "3_9": [
+    "coord_3_9\\coord_3_9_0.gif",
+    "coord_3_9\\coord_3_9_1.gif"
+  ],
+  "9_14": [
+    "coord_9_14\\coord_9_14_0.gif"
+  ]
+}
+  
+  const buildGrid = () => {
+    for (let y = 29; y >= 0; y--) {       // 30 rows, start from 29 and go down to 0
+      for (let x = 0; x < 20; x++) {     // 20 columns
+        const cell = document.createElement("div");
+        cell.classList.add("cell");
+
+        const key = `${x}_${y}`;
+        const gifs = gifsData[key] || [];
+
+        const circlesContainer = document.createElement("div");
+        circlesContainer.className = "circles";
+
+        gifs.forEach(() => {
+          const circle = document.createElement("div");
+          circle.className = "circle";
+          circlesContainer.appendChild(circle);
+        });
+
+        cell.appendChild(circlesContainer);
+
+        // Hover events
+        cell.addEventListener("mouseenter", () => {
+          if (!selectedCell) showGifs(gifs);
+        });
+
+        cell.addEventListener("mouseleave", () => {
+          if (!selectedCell) clearGifs();
+        });
+
+        // Click event
+        cell.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (selectedCell) {
+            selectedCell.classList.remove("selected");
+          }
+          selectedCell = cell;
+          cell.classList.add("selected");
+          showGifs(gifs);
+        });
+
+        grid.appendChild(cell);
+      }
+    }
+  };
+  
+    function showGifs(gifs) {
+      gifPanel.innerHTML = "";
+      if (gifs.length === 0) {
+        gifPanel.innerHTML = "<p>No GIFs for this cell.</p>";
+      } else {
+        gifs.forEach(src => {
+          const img = document.createElement("img");
+          img.src = `gifs/${src}`;
+          gifPanel.appendChild(img);
+        });
+      }
+    }
+  
+    function clearGifs() {
+      if (!selectedCell) {
+        gifPanel.innerHTML = "<h3>Hover over a cell to view GIFs</h3>";
+      }
+    }
+  
+    document.addEventListener("click", () => {
+      if (selectedCell) {
+        selectedCell.classList.remove("selected");
+        selectedCell = null;
+        clearGifs();
+      }
+    });
+  
+    // Once the data is loaded, build the grid
+    buildGrid();
+  </script>
+  
+  
+</body>
+</html>
