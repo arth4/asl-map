@@ -13,8 +13,8 @@
       margin: 0;
       padding: 24px;
       font-family: sans-serif;
-      background: #f9f9f9;
-      color: #222;
+      background: #000000;
+      color: #ffffff;
     }
   
     #container {
@@ -26,13 +26,16 @@
     .main-content {
       display: flex;
       align-items: flex-start;
+      /* background-color: #006503; */
     }
   
     .grid-wrapper {
       display: flex;
       flex-direction: row;
       margin-right: 20px; /* Margin between grid and panel */
-      transform: scale(0.75); /* Scale grid by 75% (adjust further if needed) */
+      transform-origin: top left;
+      transform: scale(0.8); /* Scale grid by 75% (adjust further if needed) */
+      border: #00a906 solid 4px;
     }
   
     .y-axis-title {
@@ -41,7 +44,7 @@
       text-align: center;
       margin-right: 16px;
       font-weight: bold;
-      font-size: 14px;
+      font-size: 18px;
       height: calc(30 * 24px + 29 * 2px); /* 30 rows of 24px, plus 29 gaps of 2px */
       display: flex;
       align-items: center;
@@ -55,7 +58,7 @@
     }
   
     #grid-container {
-      background-color: #ddd;
+      /* background-color: #000000; */
       width: calc(20 * 24px + 19 * 2px); /* 20 columns of 24px, plus 19 gaps of 2px */
       height: calc(30 * 24px + 29 * 2px); /* 30 rows of 24px, plus 29 gaps of 2px */
       padding: 4px;
@@ -72,14 +75,14 @@
       position: relative;
       height: calc(30 * 24px);  /* Adjust grid height */
       width: calc(20 * 24px);   /* Adjust grid width */
-      background-color: #ccc;   /* Grey background */
-      transform-origin: top left; /* Keep top-left corner as anchor */
-    }
+      /* background-color: #6b6b6b;   Grey background */
+      transform-origin: top left;
+      transform: scale(0.85); /* Scale grid by 75% (adjust further if needed) */    }
   
     .x-axis-title {
       margin-top: 16px;
       font-weight: bold;
-      font-size: 14px;
+      font-size: 18px;
       text-align: center;
       width: calc(20 * 24px + 19 * 2px); /* Same width as grid */
     }
@@ -106,16 +109,17 @@
     }
   
     .circles {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(6px, 1fr));
+      gap: 2px;
       width: 100%;
       height: 100%;
+      transform-origin: top left;
+      transform: scale(0.8);
     }
   
     .circle {
-      background-color: #4caf50;  /* Green color for circles */
+      background-color: #00a906;  /* Green color for circles */
       border-radius: 50%;
       width: 8px;  /* Smaller circles */
       height: 8px; /* Smaller circles */
@@ -125,13 +129,15 @@
     #gif-panel {
       width: 300px;
       margin-left: 32px;
-      background: #f4f4f4;
+      background: #000000;
       padding: 16px;
       overflow-y: auto;
-      border: 1px solid #ccc;
+      border: 4px solid #00a906;
       height: calc(30 * 24px + 29 * 2px); /* Same height as grid */
       box-sizing: border-box;
       flex-shrink: 0;
+      transform-origin: top left;
+      transform: scale(0.85)
     }
   
     #gif-panel img {
@@ -142,7 +148,7 @@
   
     #gif-panel h3, #gif-panel p {
       margin-top: 0;
-      color: #333;
+      color: #ffffff;
     }
   </style>
   
@@ -161,7 +167,7 @@
       </div>
 
       <div id="gif-panel">
-        <h3>Hover over a cell to view GIFs</h3>
+        <h3>Hover over a cell to view the individuals</h3>
       </div>
     </div>
   </div>
@@ -704,7 +710,7 @@
     function showGifs(gifs) {
       gifPanel.innerHTML = "";
       if (gifs.length === 0) {
-        gifPanel.innerHTML = "<p>No GIFs for this cell.</p>";
+        gifPanel.innerHTML = "<h3>Hover over a cell to view the individuals</h3>";
       } else {
         gifs.forEach(src => {
           const img = document.createElement("img");
@@ -716,7 +722,7 @@
   
     function clearGifs() {
       if (!selectedCell) {
-        gifPanel.innerHTML = "<h3>Hover over a cell to view GIFs</h3>";
+        gifPanel.innerHTML = "<h3>Hover over a cell to view the individuals</h3>";
       }
     }
   
