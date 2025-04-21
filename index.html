@@ -21,34 +21,29 @@
 
     .app {
       display: flex;
-      flex: 1;
-      overflow: hidden;
+      width: 100%;
+      height: 90vh;
+      border: 4px solid #00a906;
     }
 
     .grid-area {
-      flex: 1;
       display: flex;
-      flex-direction: column;
-      overflow: hidden;
+      flex-direction: row; /* Adjusted to align Y-axis with the grid */
+      align-items: center; /* Align items to the start of the flex container */
     }
 
     .y-axis {
       writing-mode: vertical-rl;
+      text-align: center;
       transform: rotate(180deg);
       font-weight: bold;
       font-size: 16px;
-      padding: 4px;
-      text-align: center;
-    }
-
-    .x-axis {
-      font-weight: bold;
-      font-size: 16px;
-      text-align: center;
-      padding: 4px;
+      margin-right: 8px; /* Adjusted to make space between label and grid */
     }
 
     .grid-wrapper {
+      display: flex;
+      flex-direction: column;
       flex: 1;
       overflow: auto;
     }
@@ -58,8 +53,16 @@
       grid-template-columns: repeat(20, 1fr);
       grid-template-rows: repeat(30, 1fr);
       gap: 2px;
-      height: 100%;
+      flex: 1;
       aspect-ratio: 2 / 3;
+    }
+
+    .x-axis {
+      font-weight: bold;
+      font-size: 16px;
+      text-align: center;
+      padding: 4px;
+      background: #000; /* optional: so the X-axis stands out */
     }
 
     .cell {
@@ -102,6 +105,8 @@
       padding: 16px;
       border-left: 4px solid #00a906;
       background: #111;
+      flex-shrink: 0;
+      flex-grow: 2;
     }
 
     .panel img {
@@ -116,26 +121,27 @@
       }
 
       .panel {
-        width: 100%;
+        height: 70%;
         border-left: none;
         border-top: 4px solid #00a906;
       }
     }
-  </style>
-</head>
+</style>
+
 <body>
   <div class="app">
     <div class="grid-area">
-      <div class="y-axis">Y Axis</div>
+      <div class="y-axis">Size</div>
       <div class="grid-wrapper">
         <div class="grid" id="grid"></div>
+        <div class="x-axis">Cycle Length</div>
       </div>
-      <div class="x-axis">X Axis</div>
     </div>
     <div class="panel" id="gif-panel">
       <h3>Hover over a cell to view the individuals</h3>
     </div>
   </div>
+
 
   <script>
     const gifData = {
