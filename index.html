@@ -3,182 +3,142 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Interactive Grid with GIFs</title>
+  <title>Responsive Grid with GIFs</title>
   <style>
     * {
       box-sizing: border-box;
     }
-  
+
     body {
       margin: 0;
-      padding: 24px;
       font-family: sans-serif;
-      background: #000000;
-      color: #ffffff;
-    }
-  
-    #container {
+      background: #000;
+      color: #fff;
+      height: 100vh;
       display: flex;
       flex-direction: column;
-      align-items: center;
     }
-  
-    .main-content {
+
+    .app {
       display: flex;
-      align-items: flex-start;
-      /* background-color: #006503; */
-    }
-  
-    .grid-wrapper {
-      display: flex;
-      flex-direction: row;
-      margin-right: 20px; /* Margin between grid and panel */
-      transform-origin: top left;
-      transform: scale(0.8); /* Scale grid by 75% (adjust further if needed) */
-      border: #00a906 solid 4px;
-    }
-  
-    .y-axis-title {
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-      text-align: center;
-      margin-right: 16px;
-      font-weight: bold;
-      font-size: 18px;
-      height: calc(30 * 24px + 29 * 2px); /* 30 rows of 24px, plus 29 gaps of 2px */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  
-    .grid-with-x {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-  
-    #grid-container {
-      /* background-color: #000000; */
-      width: calc(20 * 24px + 19 * 2px); /* 20 columns of 24px, plus 19 gaps of 2px */
-      height: calc(30 * 24px + 29 * 2px); /* 30 rows of 24px, plus 29 gaps of 2px */
-      padding: 4px;
-      display: flex;
-      justify-content: center;
-    }
-  
-    #grid {
-      display: grid;
-      grid-template-columns: repeat(20, 1fr);  /* 20 columns */
-      grid-template-rows: repeat(30, 1fr);     /* 30 rows */
-      gap: 5px;  /* Adjust the gap between cells */
-      margin: 20px;
-      position: relative;
-      height: calc(30 * 24px);  /* Adjust grid height */
-      width: calc(20 * 24px);   /* Adjust grid width */
-      /* background-color: #6b6b6b;   Grey background */
-      transform-origin: top left;
-      transform: scale(0.85); /* Scale grid by 75% (adjust further if needed) */    }
-  
-    .x-axis-title {
-      margin-top: 16px;
-      font-weight: bold;
-      font-size: 18px;
-      text-align: center;
-      width: calc(20 * 24px + 19 * 2px); /* Same width as grid */
-    }
-  
-    .cell {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: white;
-      border: 1px solid #999;
-      position: relative;
-      width: 24px;  /* Smaller cells (24px) */
-      height: 24px; /* Smaller cells (24px) */
-      cursor: pointer;
+      flex: 1;
       overflow: hidden;
     }
-  
+
+    .grid-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .y-axis {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-weight: bold;
+      font-size: 16px;
+      padding: 4px;
+      text-align: center;
+    }
+
+    .x-axis {
+      font-weight: bold;
+      font-size: 16px;
+      text-align: center;
+      padding: 4px;
+    }
+
+    .grid-wrapper {
+      flex: 1;
+      overflow: auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(20, 1fr);
+      grid-template-rows: repeat(30, 1fr);
+      gap: 2px;
+      height: 100%;
+      aspect-ratio: 2 / 3;
+    }
+
+    .cell {
+      background: white;
+      border: 1px solid #666;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+      padding: 2px;
+      min-height: 0;
+    }
+
+    .cell.locked {
+      border: 2px solid red;
+    }
+
     .cell:hover {
       background: #e7f3ff;
     }
-  
-    .cell.selected {
-      background: #bee3ff;
-    }
-  
-    .circles {
+
+    .dots {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(6px, 1fr));
+      grid-template-columns: repeat(3, auto);
       gap: 2px;
-      width: 100%;
-      height: 100%;
-      transform-origin: top left;
-      transform: scale(0.8);
+      justify-content: center;
     }
-  
-    .circle {
-      background-color: #00a906;  /* Green color for circles */
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      background: #00a906;
       border-radius: 50%;
-      width: 8px;  /* Smaller circles */
-      height: 8px; /* Smaller circles */
-      margin: 2px;
     }
-  
-    #gif-panel {
+
+    .panel {
       width: 300px;
-      margin-left: 32px;
-      background: #000000;
-      padding: 16px;
       overflow-y: auto;
-      border: 4px solid #00a906;
-      height: calc(30 * 24px + 29 * 2px); /* Same height as grid */
-      box-sizing: border-box;
-      flex-shrink: 0;
-      transform-origin: top left;
-      transform: scale(0.85)
+      padding: 16px;
+      border-left: 4px solid #00a906;
+      background: #111;
     }
-  
-    #gif-panel img {
+
+    .panel img {
       width: 100%;
       margin-bottom: 10px;
       border-radius: 6px;
     }
-  
-    #gif-panel h3, #gif-panel p {
-      margin-top: 0;
-      color: #ffffff;
+
+    @media (max-width: 768px) {
+      .app {
+        flex-direction: column;
+      }
+
+      .panel {
+        width: 100%;
+        border-left: none;
+        border-top: 4px solid #00a906;
+      }
     }
   </style>
-  
 </head>
 <body>
-  <div id="container">
-    <div class="main-content">
+  <div class="app">
+    <div class="grid-area">
+      <div class="y-axis">Y Axis</div>
       <div class="grid-wrapper">
-        <div class="y-axis-title">Y Axis</div>
-        <div class="grid-with-x">
-          <div id="grid-container">
-            <div id="grid"></div>
-          </div>
-          <div class="x-axis-title">X Axis</div>
-        </div>
+        <div class="grid" id="grid"></div>
       </div>
-
-      <div id="gif-panel">
-        <h3>Hover over a cell to view the individuals</h3>
-      </div>
+      <div class="x-axis">X Axis</div>
+    </div>
+    <div class="panel" id="gif-panel">
+      <h3>Hover over a cell to view the individuals</h3>
     </div>
   </div>
 
   <script>
-    const grid = document.getElementById("grid");
-    const gifPanel = document.getElementById("gif-panel");
-    let selectedCell = null;
-  
-    // Directly embedded JSON data
-    const gifsData = {
+    const gifData = {
   "0_0": [
     "coord_0_0\\coord_0_0_0.gif",
     "coord_0_0\\coord_0_0_1.gif",
@@ -660,84 +620,70 @@
   "9_14": [
     "coord_9_14\\coord_9_14_0.gif"
   ]
-}
-  
-  const buildGrid = () => {
-    for (let y = 29; y >= 0; y--) {       // 30 rows, start from 29 and go down to 0
-      for (let x = 0; x < 20; x++) {     // 20 columns
+};
+
+    const grid = document.getElementById("grid");
+    const gifPanel = document.getElementById("gif-panel");
+
+    let lockedCell = null;
+
+    for (let row = 0; row < 30; row++) {
+      for (let col = 0; col < 20; col++) {
         const cell = document.createElement("div");
-        cell.classList.add("cell");
+        cell.className = "cell";
+        cell.dataset.coord = `${col}_${row}`;
+        cell.title = `(${col}, ${row})`;
 
-        const key = `${x}_${y}`;
-        const gifs = gifsData[key] || [];
+        const key = `${col}_${row}`;
+        const gifs = gifData[key] || [];
 
-        const circlesContainer = document.createElement("div");
-        circlesContainer.className = "circles";
+        if (gifs.length) {
+          const dotsContainer = document.createElement("div");
+          dotsContainer.className = "dots";
+          gifs.slice(0, 9).forEach(() => {
+            const dot = document.createElement("div");
+            dot.className = "dot";
+            dotsContainer.appendChild(dot);
+          });
+          cell.appendChild(dotsContainer);
+        }
 
-        gifs.forEach(() => {
-          const circle = document.createElement("div");
-          circle.className = "circle";
-          circlesContainer.appendChild(circle);
-        });
-
-        cell.appendChild(circlesContainer);
-
-        // Hover events
         cell.addEventListener("mouseenter", () => {
-          if (!selectedCell) showGifs(gifs);
+          if (lockedCell) return;
+          displayGIFs(col, row);
         });
 
-        cell.addEventListener("mouseleave", () => {
-          if (!selectedCell) clearGifs();
-        });
-
-        // Click event
         cell.addEventListener("click", (e) => {
           e.stopPropagation();
-          if (selectedCell) {
-            selectedCell.classList.remove("selected");
-          }
-          selectedCell = cell;
-          cell.classList.add("selected");
-          showGifs(gifs);
+          if (lockedCell) return;
+
+          lockedCell = cell;
+          cell.classList.add("locked");
+          displayGIFs(col, row);
         });
 
         grid.appendChild(cell);
       }
     }
-  };
-  
-    function showGifs(gifs) {
-      gifPanel.innerHTML = "";
-      if (gifs.length === 0) {
-        gifPanel.innerHTML = "<h3>Hover over a cell to view the individuals</h3>";
-      } else {
-        gifs.forEach(src => {
-          const img = document.createElement("img");
-          img.src = `gifs/${src}`;
-          gifPanel.appendChild(img);
-        });
-      }
+
+    function displayGIFs(x, y) {
+      const key = `${x}_${y}`;
+      const gifs = gifData[key] || [];
+      gifPanel.innerHTML = `<h3>GIFs for (${x}, ${y})</h3>`;
+      gifs.forEach((src) => {
+        const img = document.createElement("img");
+        img.src = `gifs/${src}`;
+        gifPanel.appendChild(img);
+      });
     }
-  
-    function clearGifs() {
-      if (!selectedCell) {
-        gifPanel.innerHTML = "<h3>Hover over a cell to view the individuals</h3>";
-      }
-    }
-  
+
     document.addEventListener("click", () => {
-      if (selectedCell) {
-        selectedCell.classList.remove("selected");
-        selectedCell = null;
-        clearGifs();
+      if (lockedCell) {
+        lockedCell.classList.remove("locked");
+        lockedCell = null;
+        gifPanel.innerHTML = `<h3>Hover over a cell to view the individuals</h3>`;
       }
     });
-  
-    // Once the data is loaded, build the grid
-    buildGrid();
   </script>
-  
-  
 </body>
 </html>
