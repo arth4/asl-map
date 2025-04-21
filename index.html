@@ -56,6 +56,7 @@
       flex: 1;
       aspect-ratio: 2 / 3;
       transform: scaleY(-1);
+      box-sizing: border-box;
     }
 
     .x-axis {
@@ -76,6 +77,7 @@
       cursor: pointer;
       padding: 2px;
       min-height: 0;
+      box-sizing: border-box;
     }
 
     .cell.locked {
@@ -632,65 +634,75 @@
     const grid = document.getElementById("grid");
     const gifPanel = document.getElementById("gif-panel");
 
-    let lockedCell = null;
+    
+let lockedCell = null;
 
-    for (let row = 0; row < 30; row++) {
-      for (let col = 0; col < 20; col++) {
-        const cell = document.createElement("div");
-        cell.className = "cell";
-        cell.dataset.coord = `${col}_${row}`;
-        cell.title = `(${col}, ${row})`;
+for (let row = 0; row < 30; row++) {
+  for (let col = 0; col < 20; col++) {
+    const cell = document.createElement("div");
+    cell.className = "cell";
+    cell.dataset.coord = `${col}_${row}`;
+    cell.title = `(${col}, ${row})`;
 
-        const key = `${col}_${row}`;
-        const gifs = gifData[key] || [];
+    const key = `${col}_${row}`;
+    const gifs = gifData[key] || [];
 
-        if (gifs.length) {
-          const dotsContainer = document.createElement("div");
-          dotsContainer.className = "dots";
-          gifs.slice(0, 9).forEach(() => {
-            const dot = document.createElement("div");
-            dot.className = "dot";
-            dotsContainer.appendChild(dot);
-          });
-          cell.appendChild(dotsContainer);
-        }
-
-        cell.addEventListener("mouseenter", () => {
-          if (lockedCell) return;
-          displayGIFs(col, row);
-        });
-
-        cell.addEventListener("click", (e) => {
-          e.stopPropagation();
-          if (lockedCell) return;
-
-          lockedCell = cell;
-          cell.classList.add("locked");
-          displayGIFs(col, row);
-        });
-
-        grid.appendChild(cell);
-      }
-    }
-
-    function displayGIFs(x, y) {
-      const key = `${x}_${y}`;
-      const gifs = gifData[key] || [];
-      gifPanel.innerHTML = `<h3>Individuals at (${x}, ${y})</h3>`;
-      gifs.forEach((src) => {
-        const img = document.createElement("img");
-        img.src = `gifs/${src}`;
-        gifPanel.appendChild(img);
+    if (gifs.length) {
+      const dotsContainer = document.createElement("div");
+      dotsContainer.className = "dots";
+      gifs.slice(0, 9).forEach(() => {
+        const dot = document.createElement("div");
+        dot.className = "dot";
+        dotsContainer.appendChild(dot);
       });
+      cell.appendChild(dotsContainer);
     }
 
-    document.addEventListener("click", () => {
+    cell.addEventListener("mouseenter", () => {
+      if (lockedCell) return;
+      displayGIFs(col, row);
+    });
+
+    cell.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent triggering the document click handler
+
       if (lockedCell) {
+        // Unlock the cell if a locked cell exists
         lockedCell.classList.remove("locked");
         lockedCell = null;
         gifPanel.innerHTML = `<h3>Hover over a cell to view the individuals</h3>`;
+      } else {
+        // Lock the clicked cell if no cell is locked
+        lockedCell = cell;
+        lockedCell.classList.add("locked");
+        displayGIFs(col, row);
       }
     });
+
+    grid.appendChild(cell);
+  }
+}
+
+function displayGIFs(x, y) {
+  const key = `${x}_${y}`;
+  const gifs = gifData[key] || [];
+  gifPanel.innerHTML = `<h3>Individuals at (${x}, ${y})</h3>`;
+  gifs.forEach((src) => {
+    const img = document.createElement("img");
+    img.src = `gifs/${src}`;
+    gifPanel.appendChild(img);
+  });
+}
+
+// Unlock the cell if clicking anywhere outside the grid or gif panel
+document.addEventListener("click", (e) => {
+  // Check if the click is outside the grid or panel to unlock the cell
+  if (lockedCell && !gifPanel.contains(e.target) && !grid.contains(e.target)) {
+    lockedCell.classList.remove("locked");
+    lockedCell = null;
+    gifPanel.innerHTML = `<h3>Hover over a cell to view the individuals</h3>`;
+  }
+});
   </script>
 </body>
 </html>
