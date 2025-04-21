@@ -55,6 +55,7 @@
       gap: 2px;
       flex: 1;
       aspect-ratio: 2 / 3;
+      transform: scaleY(-1);
     }
 
     .x-axis {
@@ -675,7 +676,7 @@
     function displayGIFs(x, y) {
       const key = `${x}_${y}`;
       const gifs = gifData[key] || [];
-      gifPanel.innerHTML = `<h3>GIFs for (${x}, ${y})</h3>`;
+      gifPanel.innerHTML = `<h3>Individuals at (${x}, ${y})</h3>`;
       gifs.forEach((src) => {
         const img = document.createElement("img");
         img.src = `gifs/${src}`;
