@@ -109,28 +109,25 @@
       border-left: 4px solid #00a906;
       background: #111;
       flex-shrink: 0;
-      flex-grow: 2;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gif-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 10px;
     }
 
     .panel img {
       width: 100%;
-      margin-bottom: 10px;
+      height: auto;
+      margin: 0;
       border-radius: 6px;
+      display: block;
     }
 
-    @media (max-width: 768px) {
-      .app {
-        flex-direction: column;
-        height: 100%;
-      }
-
-      .panel {
-        height: 30%;
-        width: 100%;
-        border-left: none;
-        border-top: 4px solid #00a906;
-      }
-    }
 </style>
 
 <body>
@@ -688,12 +685,19 @@ for (let row = 0; row < 30; row++) {
 function displayGIFs(x, y) {
   const key = `${x}_${y}`;
   const gifs = gifData[key] || [];
-  gifPanel.innerHTML = `<h3>Individuals at (${x}, ${y})</h3>`;
+
+  gifPanel.innerHTML = `<h3>GIFs for (${x}, ${y})</h3>`;
+
+  const gifGrid = document.createElement("div");
+  gifGrid.className = "gif-grid";
+
   gifs.forEach((src) => {
     const img = document.createElement("img");
     img.src = `gifs/${src}`;
-    gifPanel.appendChild(img);
+    gifGrid.appendChild(img);
   });
+
+  gifPanel.appendChild(gifGrid);
 }
 
 // Unlock the cell if clicking anywhere outside the grid or gif panel
