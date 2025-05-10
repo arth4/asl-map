@@ -1,714 +1,518 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Responsive Grid with GIFs</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      background: #000;
-      color: #fff;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .app {
-      display: flex;
-      width: 100%;
-      height: 90vh;
-      border: 4px solid #00a906;
-    }
-
-    .grid-area {
-      display: flex;
-      flex-direction: row; /* Adjusted to align Y-axis with the grid */
-      align-items: center; /* Align items to the start of the flex container */
-    }
-
-    .y-axis {
-      writing-mode: vertical-rl;
-      text-align: center;
-      transform: rotate(180deg);
-      font-weight: bold;
-      font-size: 16px;
-      margin-right: 8px; /* Adjusted to make space between label and grid */
-    }
-
-    .grid-wrapper {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      overflow: auto;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(20, 1fr);
-      grid-template-rows: repeat(30, 1fr);
-      gap: 2px;
-      flex: 1;
-      aspect-ratio: 2 / 3;
-      transform: scaleY(-1);
-      box-sizing: border-box;
-    }
-
-    .x-axis {
-      font-weight: bold;
-      font-size: 16px;
-      text-align: center;
-      padding: 4px;
-      background: #000; /* optional: so the X-axis stands out */
-    }
-
-    .cell {
-      background: white;
-      border: 1px solid #666;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      cursor: pointer;
-      padding: 2px;
-      min-height: 0;
-      box-sizing: border-box;
-    }
-
-    .cell.locked {
-      border: 2px solid red;
-    }
-
-    .cell:hover {
-      background: #e7f3ff;
-    }
-
-    .dots {
-      display: grid;
-      grid-template-columns: repeat(3, auto);
-      gap: 2px;
-      justify-content: center;
-    }
-
-    .dot {
-      width: 6px;
-      height: 6px;
-      background: #00a906;
-      border-radius: 50%;
-    }
-
-    .panel {
-      width: 300px;
-      overflow-y: auto;
-      padding: 16px;
-      border-left: 4px solid #00a906;
-      background: #111;
-      flex-shrink: 0;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .gif-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 10px;
-    }
-
-    .panel img {
-      width: 100%;
-      height: auto;
-      margin: 0;
-      border-radius: 6px;
-      display: block;
-    }
-
-</style>
-
+<html>
+<head><meta charset="utf-8" />
+    <style>
+        /* Style for the GIF display section */
+        #gif-display {
+            margin-top: 20px;
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            background-color: black;
+            min-height: 200px;
+        }
+        #gif-display img {
+            max-width: 200px;
+            height: auto;
+            margin: 10px;
+            object-fit: contain;
+        }
+    </style>
+</head>
 <body>
-  <div class="app">
-    <div class="grid-area">
-      <div class="y-axis">Size</div>
-      <div class="grid-wrapper">
-        <div class="grid" id="grid"></div>
-        <div class="x-axis">Cycle Length</div>
-      </div>
+    <div>                        
+        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.1.min.js"></script>                <div id="0c9f33b3-84bc-41dc-828f-d35098df48d1" class="plotly-graph-div" style="height:300px; width:800px;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("0c9f33b3-84bc-41dc-828f-d35098df48d1")) {                    Plotly.newPlot(                        "0c9f33b3-84bc-41dc-828f-d35098df48d1",                        [{"customdata":["coord_0_0"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[3.9810717055349722],"y":[0],"type":"scatter"},{"customdata":["coord_0_5"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[7.818140093019884],"y":[0],"type":"scatter"},{"customdata":["coord_0_15"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[30.151598738257356],"y":[0],"type":"scatter"},{"customdata":["coord_0_16"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[34.50889352164153],"y":[0],"type":"scatter"},{"customdata":["coord_0_8"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[11.7210229753348],"y":[0],"type":"scatter"},{"customdata":["coord_0_6"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[8.947962141223854],"y":[0],"type":"scatter"},{"customdata":["coord_0_1"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[4.556387897733955],"y":[0],"type":"scatter"},{"customdata":["coord_0_11"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[17.572258613142868],"y":[0],"type":"scatter"},{"customdata":["coord_0_4"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[6.830975986418829],"y":[0],"type":"scatter"},{"customdata":["coord_0_7"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[10.24105804298124],"y":[0],"type":"scatter"},{"customdata":["coord_0_14"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[26.344481485700136],"y":[0],"type":"scatter"},{"customdata":["coord_0_10"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[15.353482437682263],"y":[0],"type":"scatter"},{"customdata":["coord_0_13"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[23.018073130224654],"y":[0],"type":"scatter"},{"customdata":["coord_0_18"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[45.203536563602405],"y":[0],"type":"scatter"},{"customdata":["coord_0_3"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[5.968456995122308],"y":[0],"type":"scatter"},{"customdata":["coord_0_17"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[39.495873582881856],"y":[0],"type":"scatter"},{"customdata":["coord_0_19"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[51.73603043793831],"y":[0],"type":"scatter"},{"customdata":["coord_0_9"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[13.414861922639128],"y":[0],"type":"scatter"},{"customdata":["coord_0_12"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[20.11167655419464],"y":[0],"type":"scatter"},{"customdata":["coord_0_20"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[59.21255390514012],"y":[0],"type":"scatter"},{"customdata":["coord_0_21"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[67.76953141341247],"y":[0],"type":"scatter"},{"customdata":["coord_0_22"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[77.56310250274166],"y":[0],"type":"scatter"},{"customdata":["coord_0_23"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[88.77197088985861],"y":[0],"type":"scatter"},{"customdata":["coord_0_2"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[5.21484469766079],"y":[0],"type":"scatter"},{"customdata":["coord_0_24"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[101.60066528271416],"y":[0],"type":"scatter"},{"customdata":["coord_0_25"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[116.28327142469011],"y":[0],"type":"scatter"},{"customdata":["coord_0_26"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[133.08770346731856],"y":[0],"type":"scatter"},{"customdata":["coord_0_27"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[152.32059261143309],"y":[0],"type":"scatter"},{"customdata":["coord_0_28"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[174.33288221999874],"y":[0],"type":"scatter"},{"customdata":["coord_0_29"],"hovertemplate":"Still Life","marker":{"color":"blue","size":12,"symbol":"circle"},"mode":"markers","name":"Still","x":[199.52623149688787],"y":[0],"type":"scatter"},{"customdata":["coord_19_8"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[11.7210229753348],"y":[4],"type":"scatter"},{"customdata":["coord_19_0"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[3.9810717055349722],"y":[4],"type":"scatter"},{"customdata":["coord_19_7"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[10.24105804298124],"y":[4],"type":"scatter"},{"customdata":["coord_19_3"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[5.968456995122308],"y":[4],"type":"scatter"},{"customdata":["coord_19_1"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[4.556387897733955],"y":[4],"type":"scatter"},{"customdata":["coord_19_9"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[13.414861922639128],"y":[4],"type":"scatter"},{"customdata":["coord_19_5"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[7.818140093019884],"y":[4],"type":"scatter"},{"customdata":["coord_19_11"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[17.572258613142868],"y":[4],"type":"scatter"},{"customdata":["coord_19_6"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[8.947962141223854],"y":[4],"type":"scatter"},{"customdata":["coord_19_13"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[23.018073130224654],"y":[4],"type":"scatter"},{"customdata":["coord_19_4"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[6.830975986418829],"y":[4],"type":"scatter"},{"customdata":["coord_19_10"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[15.353482437682263],"y":[4],"type":"scatter"},{"customdata":["coord_19_14"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[26.344481485700136],"y":[4],"type":"scatter"},{"customdata":["coord_19_2"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[5.21484469766079],"y":[4],"type":"scatter"},{"customdata":["coord_19_12"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[20.11167655419464],"y":[4],"type":"scatter"},{"customdata":["coord_19_16"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[34.50889352164153],"y":[4],"type":"scatter"},{"customdata":["coord_19_15"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[30.151598738257356],"y":[4],"type":"scatter"},{"customdata":["coord_19_18"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[45.203536563602405],"y":[4],"type":"scatter"},{"customdata":["coord_19_17"],"hovertemplate":"Glider","marker":{"color":"orange","size":12,"symbol":"circle"},"mode":"markers","name":"Unbound","x":[39.495873582881856],"y":[4],"type":"scatter"},{"customdata":["coord_19_19"],"hovertemplate":"Grower","marker":{"color":"orange","size":12,"symbol":"x"},"mode":"markers","name":"Unbound","x":[51.73603043793831],"y":[4],"type":"scatter"},{"customdata":["coord_19_22"],"hovertemplate":"Grower","marker":{"color":"orange","size":12,"symbol":"x"},"mode":"markers","name":"Unbound","x":[77.56310250274166],"y":[4],"type":"scatter"},{"customdata":["coord_19_23"],"hovertemplate":"Grower","marker":{"color":"orange","size":12,"symbol":"x"},"mode":"markers","name":"Unbound","x":[88.77197088985861],"y":[4],"type":"scatter"},{"customdata":["coord_19_20"],"hovertemplate":"Grower","marker":{"color":"orange","size":12,"symbol":"x"},"mode":"markers","name":"Unbound","x":[59.21255390514012],"y":[4],"type":"scatter"},{"customdata":["coord_19_21"],"hovertemplate":"Grower","marker":{"color":"orange","size":12,"symbol":"x"},"mode":"markers","name":"Unbound","x":[67.76953141341247],"y":[4],"type":"scatter"},{"customdata":["coord_19_24"],"hovertemplate":"Grower","marker":{"color":"orange","size":12,"symbol":"x"},"mode":"markers","name":"Unbound","x":[101.60066528271416],"y":[4],"type":"scatter"},{"customdata":["coord_19_25"],"hovertemplate":"Grower","marker":{"color":"orange","size":12,"symbol":"x"},"mode":"markers","name":"Unbound","x":[116.28327142469011],"y":[4],"type":"scatter"},{"customdata":["coord_19_26"],"hovertemplate":"Grower","marker":{"color":"orange","size":12,"symbol":"x"},"mode":"markers","name":"Unbound","x":[133.08770346731856],"y":[4],"type":"scatter"},{"customdata":["coord_19_27"],"hovertemplate":"Grower","marker":{"color":"orange","size":12,"symbol":"x"},"mode":"markers","name":"Unbound","x":[152.32059261143309],"y":[4],"type":"scatter"},{"customdata":["coord_19_28"],"hovertemplate":"Grower","marker":{"color":"orange","size":12,"symbol":"x"},"mode":"markers","name":"Unbound","x":[174.33288221999874],"y":[4],"type":"scatter"},{"customdata":["coord_19_29"],"hovertemplate":"Grower","marker":{"color":"orange","size":12,"symbol":"x"},"mode":"markers","name":"Unbound","x":[199.52623149688787],"y":[4],"type":"scatter"},{"customdata":["coord_1_0"],"hovertemplate":"2-period Oscillator","marker":{"color":"#F1BEB5","size":12},"mode":"markers+text","name":"Oscillator","showlegend":false,"text":["2"],"textposition":"middle center","x":[3.9810717055349722],"y":[2.0],"type":"scatter"},{"customdata":["coord_1_1"],"hovertemplate":"2-period Oscillator","marker":{"color":"#F1BEB5","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["2"],"textposition":"middle center","x":[4.556387897733955],"y":[2.0],"type":"scatter"},{"customdata":["coord_1_3"],"hovertemplate":"2-period Oscillator","marker":{"color":"#F1BEB5","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["2"],"textposition":"middle center","x":[5.968456995122308],"y":[2.0],"type":"scatter"},{"customdata":["coord_1_5"],"hovertemplate":"2-period Oscillator","marker":{"color":"#F1BEB5","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["2"],"textposition":"middle center","x":[7.818140093019884],"y":[2.0],"type":"scatter"},{"customdata":["coord_1_6"],"hovertemplate":"2-period Oscillator","marker":{"color":"#F1BEB5","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["2"],"textposition":"middle center","x":[8.947962141223854],"y":[1.75],"type":"scatter"},{"customdata":["coord_3_6"],"hovertemplate":"4-period Oscillator","marker":{"color":"#A4D8D8","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["4"],"textposition":"middle center","x":[8.947962141223854],"y":[2.25],"type":"scatter"},{"customdata":["coord_1_7"],"hovertemplate":"2-period Oscillator","marker":{"color":"#F1BEB5","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["2"],"textposition":"middle center","x":[10.24105804298124],"y":[1.5],"type":"scatter"},{"customdata":["coord_3_7"],"hovertemplate":"4-period Oscillator","marker":{"color":"#A4D8D8","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["4"],"textposition":"middle center","x":[10.24105804298124],"y":[2.0],"type":"scatter"},{"customdata":["coord_13_7"],"hovertemplate":"14-period Oscillator","marker":{"color":"#FFA4A9","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["14"],"textposition":"middle center","x":[10.24105804298124],"y":[2.5],"type":"scatter"},{"customdata":["coord_3_8"],"hovertemplate":"4-period Oscillator","marker":{"color":"#A4D8D8","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["4"],"textposition":"middle center","x":[11.7210229753348],"y":[2.0],"type":"scatter"},{"customdata":["coord_1_9"],"hovertemplate":"2-period Oscillator","marker":{"color":"#F1BEB5","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["2"],"textposition":"middle center","x":[13.414861922639128],"y":[1.75],"type":"scatter"},{"customdata":["coord_3_9"],"hovertemplate":"4-period Oscillator","marker":{"color":"#A4D8D8","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["4"],"textposition":"middle center","x":[13.414861922639128],"y":[2.25],"type":"scatter"},{"customdata":["coord_1_10"],"hovertemplate":"2-period Oscillator","marker":{"color":"#F1BEB5","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["2"],"textposition":"middle center","x":[15.353482437682263],"y":[2.0],"type":"scatter"},{"customdata":["coord_1_11"],"hovertemplate":"2-period Oscillator","marker":{"color":"#F1BEB5","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["2"],"textposition":"middle center","x":[17.572258613142868],"y":[2.0],"type":"scatter"},{"customdata":["coord_1_12"],"hovertemplate":"2-period Oscillator","marker":{"color":"#F1BEB5","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["2"],"textposition":"middle center","x":[20.11167655419464],"y":[1.75],"type":"scatter"},{"customdata":["coord_2_12"],"hovertemplate":"3-period Oscillator","marker":{"color":"#F8C57C","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["3"],"textposition":"middle center","x":[20.11167655419464],"y":[2.25],"type":"scatter"},{"customdata":["coord_1_13"],"hovertemplate":"2-period Oscillator","marker":{"color":"#F1BEB5","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["2"],"textposition":"middle center","x":[23.018073130224654],"y":[2.0],"type":"scatter"},{"customdata":["coord_1_14"],"hovertemplate":"2-period Oscillator","marker":{"color":"#F1BEB5","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["2"],"textposition":"middle center","x":[26.344481485700136],"y":[1.5],"type":"scatter"},{"customdata":["coord_9_14"],"hovertemplate":"10-period Oscillator","marker":{"color":"#E5C768","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["10"],"textposition":"middle center","x":[26.344481485700136],"y":[2.0],"type":"scatter"},{"customdata":["coord_11_14"],"hovertemplate":"12-period Oscillator","marker":{"color":"#9DD6AD","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["12"],"textposition":"middle center","x":[26.344481485700136],"y":[2.5],"type":"scatter"},{"customdata":["coord_1_15"],"hovertemplate":"2-period Oscillator","marker":{"color":"#F1BEB5","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["2"],"textposition":"middle center","x":[30.151598738257356],"y":[2.0],"type":"scatter"},{"customdata":["coord_1_16"],"hovertemplate":"2-period Oscillator","marker":{"color":"#F1BEB5","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["2"],"textposition":"middle center","x":[34.50889352164153],"y":[2.0],"type":"scatter"},{"customdata":["coord_1_17"],"hovertemplate":"2-period Oscillator","marker":{"color":"#F1BEB5","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["2"],"textposition":"middle center","x":[39.495873582881856],"y":[2.0],"type":"scatter"},{"customdata":["coord_1_18"],"hovertemplate":"2-period Oscillator","marker":{"color":"#F1BEB5","size":12},"mode":"markers+text","name":"","showlegend":false,"text":["2"],"textposition":"middle center","x":[45.203536563602405],"y":[2.0],"type":"scatter"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"yaxis":{"tickmode":"array","tickvals":[0,2,4],"ticktext":["Still","Oscillator","Unbound"]},"margin":{"l":40,"r":40,"t":40,"b":40},"xaxis":{"title":{"text":"Size"},"type":"log"},"height":300,"width":800,"showlegend":false,"dragmode":false},                        {"displayModeBar": false, "responsive": true}                    )                };            
+        </script>
     </div>
-    <div class="panel" id="gif-panel">
-      <h3>Hover over a cell to view the individuals</h3>
-    </div>
-  </div>
 
-
-  <script>
-    const gifData = {
-  "0_0": [
-    "coord_0_0\\coord_0_0_0.gif",
-    "coord_0_0\\coord_0_0_1.gif",
-    "coord_0_0\\coord_0_0_2.gif",
-    "coord_0_0\\coord_0_0_3.gif",
-    "coord_0_0\\coord_0_0_4.gif"
-  ],
-  "0_1": [
-    "coord_0_1\\coord_0_1_0.gif",
-    "coord_0_1\\coord_0_1_1.gif",
-    "coord_0_1\\coord_0_1_2.gif",
-    "coord_0_1\\coord_0_1_3.gif",
-    "coord_0_1\\coord_0_1_4.gif"
-  ],
-  "0_10": [
-    "coord_0_10\\coord_0_10_0.gif",
-    "coord_0_10\\coord_0_10_1.gif",
-    "coord_0_10\\coord_0_10_2.gif",
-    "coord_0_10\\coord_0_10_3.gif",
-    "coord_0_10\\coord_0_10_4.gif"
-  ],
-  "0_11": [
-    "coord_0_11\\coord_0_11_0.gif",
-    "coord_0_11\\coord_0_11_1.gif",
-    "coord_0_11\\coord_0_11_2.gif",
-    "coord_0_11\\coord_0_11_3.gif",
-    "coord_0_11\\coord_0_11_4.gif"
-  ],
-  "0_12": [
-    "coord_0_12\\coord_0_12_0.gif",
-    "coord_0_12\\coord_0_12_1.gif",
-    "coord_0_12\\coord_0_12_2.gif",
-    "coord_0_12\\coord_0_12_3.gif",
-    "coord_0_12\\coord_0_12_4.gif"
-  ],
-  "0_13": [
-    "coord_0_13\\coord_0_13_0.gif",
-    "coord_0_13\\coord_0_13_1.gif",
-    "coord_0_13\\coord_0_13_2.gif",
-    "coord_0_13\\coord_0_13_3.gif",
-    "coord_0_13\\coord_0_13_4.gif"
-  ],
-  "0_14": [
-    "coord_0_14\\coord_0_14_0.gif",
-    "coord_0_14\\coord_0_14_1.gif",
-    "coord_0_14\\coord_0_14_2.gif",
-    "coord_0_14\\coord_0_14_3.gif",
-    "coord_0_14\\coord_0_14_4.gif"
-  ],
-  "0_15": [
-    "coord_0_15\\coord_0_15_0.gif",
-    "coord_0_15\\coord_0_15_1.gif",
-    "coord_0_15\\coord_0_15_2.gif",
-    "coord_0_15\\coord_0_15_3.gif",
-    "coord_0_15\\coord_0_15_4.gif"
-  ],
-  "0_16": [
-    "coord_0_16\\coord_0_16_0.gif",
-    "coord_0_16\\coord_0_16_1.gif",
-    "coord_0_16\\coord_0_16_2.gif",
-    "coord_0_16\\coord_0_16_3.gif",
-    "coord_0_16\\coord_0_16_4.gif"
-  ],
-  "0_17": [
-    "coord_0_17\\coord_0_17_0.gif",
-    "coord_0_17\\coord_0_17_1.gif",
-    "coord_0_17\\coord_0_17_2.gif",
-    "coord_0_17\\coord_0_17_3.gif",
-    "coord_0_17\\coord_0_17_4.gif"
-  ],
-  "0_18": [
-    "coord_0_18\\coord_0_18_0.gif",
-    "coord_0_18\\coord_0_18_1.gif",
-    "coord_0_18\\coord_0_18_2.gif",
-    "coord_0_18\\coord_0_18_3.gif",
-    "coord_0_18\\coord_0_18_4.gif"
-  ],
-  "0_19": [
-    "coord_0_19\\coord_0_19_0.gif",
-    "coord_0_19\\coord_0_19_1.gif",
-    "coord_0_19\\coord_0_19_2.gif",
-    "coord_0_19\\coord_0_19_3.gif",
-    "coord_0_19\\coord_0_19_4.gif"
-  ],
-  "0_2": [
-    "coord_0_2\\coord_0_2_0.gif",
-    "coord_0_2\\coord_0_2_1.gif",
-    "coord_0_2\\coord_0_2_2.gif",
-    "coord_0_2\\coord_0_2_3.gif"
-  ],
-  "0_20": [
-    "coord_0_20\\coord_0_20_0.gif",
-    "coord_0_20\\coord_0_20_1.gif",
-    "coord_0_20\\coord_0_20_2.gif",
-    "coord_0_20\\coord_0_20_3.gif",
-    "coord_0_20\\coord_0_20_4.gif"
-  ],
-  "0_21": [
-    "coord_0_21\\coord_0_21_0.gif",
-    "coord_0_21\\coord_0_21_1.gif",
-    "coord_0_21\\coord_0_21_2.gif",
-    "coord_0_21\\coord_0_21_3.gif",
-    "coord_0_21\\coord_0_21_4.gif"
-  ],
-  "0_22": [
-    "coord_0_22\\coord_0_22_0.gif",
-    "coord_0_22\\coord_0_22_1.gif",
-    "coord_0_22\\coord_0_22_2.gif",
-    "coord_0_22\\coord_0_22_3.gif",
-    "coord_0_22\\coord_0_22_4.gif"
-  ],
-  "0_23": [
-    "coord_0_23\\coord_0_23_0.gif",
-    "coord_0_23\\coord_0_23_1.gif",
-    "coord_0_23\\coord_0_23_2.gif",
-    "coord_0_23\\coord_0_23_3.gif",
-    "coord_0_23\\coord_0_23_4.gif"
-  ],
-  "0_24": [
-    "coord_0_24\\coord_0_24_0.gif",
-    "coord_0_24\\coord_0_24_1.gif",
-    "coord_0_24\\coord_0_24_2.gif",
-    "coord_0_24\\coord_0_24_3.gif",
-    "coord_0_24\\coord_0_24_4.gif"
-  ],
-  "0_25": [
-    "coord_0_25\\coord_0_25_0.gif",
-    "coord_0_25\\coord_0_25_1.gif",
-    "coord_0_25\\coord_0_25_2.gif",
-    "coord_0_25\\coord_0_25_3.gif",
-    "coord_0_25\\coord_0_25_4.gif"
-  ],
-  "0_26": [
-    "coord_0_26\\coord_0_26_0.gif",
-    "coord_0_26\\coord_0_26_1.gif",
-    "coord_0_26\\coord_0_26_2.gif",
-    "coord_0_26\\coord_0_26_3.gif",
-    "coord_0_26\\coord_0_26_4.gif"
-  ],
-  "0_27": [
-    "coord_0_27\\coord_0_27_0.gif",
-    "coord_0_27\\coord_0_27_1.gif",
-    "coord_0_27\\coord_0_27_2.gif",
-    "coord_0_27\\coord_0_27_3.gif",
-    "coord_0_27\\coord_0_27_4.gif"
-  ],
-  "0_28": [
-    "coord_0_28\\coord_0_28_0.gif",
-    "coord_0_28\\coord_0_28_1.gif",
-    "coord_0_28\\coord_0_28_2.gif",
-    "coord_0_28\\coord_0_28_3.gif",
-    "coord_0_28\\coord_0_28_4.gif"
-  ],
-  "0_29": [
-    "coord_0_29\\coord_0_29_0.gif",
-    "coord_0_29\\coord_0_29_1.gif",
-    "coord_0_29\\coord_0_29_2.gif",
-    "coord_0_29\\coord_0_29_3.gif",
-    "coord_0_29\\coord_0_29_4.gif"
-  ],
-  "0_3": [
-    "coord_0_3\\coord_0_3_0.gif",
-    "coord_0_3\\coord_0_3_1.gif",
-    "coord_0_3\\coord_0_3_2.gif",
-    "coord_0_3\\coord_0_3_3.gif",
-    "coord_0_3\\coord_0_3_4.gif"
-  ],
-  "0_4": [
-    "coord_0_4\\coord_0_4_0.gif",
-    "coord_0_4\\coord_0_4_1.gif",
-    "coord_0_4\\coord_0_4_2.gif",
-    "coord_0_4\\coord_0_4_3.gif",
-    "coord_0_4\\coord_0_4_4.gif"
-  ],
-  "0_5": [
-    "coord_0_5\\coord_0_5_0.gif",
-    "coord_0_5\\coord_0_5_1.gif",
-    "coord_0_5\\coord_0_5_2.gif",
-    "coord_0_5\\coord_0_5_3.gif",
-    "coord_0_5\\coord_0_5_4.gif"
-  ],
-  "0_6": [
-    "coord_0_6\\coord_0_6_0.gif",
-    "coord_0_6\\coord_0_6_1.gif",
-    "coord_0_6\\coord_0_6_2.gif",
-    "coord_0_6\\coord_0_6_3.gif",
-    "coord_0_6\\coord_0_6_4.gif"
-  ],
-  "0_7": [
-    "coord_0_7\\coord_0_7_0.gif",
-    "coord_0_7\\coord_0_7_1.gif",
-    "coord_0_7\\coord_0_7_2.gif",
-    "coord_0_7\\coord_0_7_3.gif",
-    "coord_0_7\\coord_0_7_4.gif"
-  ],
-  "0_8": [
-    "coord_0_8\\coord_0_8_0.gif",
-    "coord_0_8\\coord_0_8_1.gif",
-    "coord_0_8\\coord_0_8_2.gif",
-    "coord_0_8\\coord_0_8_3.gif",
-    "coord_0_8\\coord_0_8_4.gif"
-  ],
-  "0_9": [
-    "coord_0_9\\coord_0_9_0.gif",
-    "coord_0_9\\coord_0_9_1.gif",
-    "coord_0_9\\coord_0_9_2.gif",
-    "coord_0_9\\coord_0_9_3.gif",
-    "coord_0_9\\coord_0_9_4.gif"
-  ],
-  "11_14": [
-    "coord_11_14\\coord_11_14_0.gif"
-  ],
-  "13_7": [
-    "coord_13_7\\coord_13_7_0.gif",
-    "coord_13_7\\coord_13_7_1.gif"
-  ],
-  "19_0": [
-    "coord_19_0\\coord_19_0_0.gif",
-    "coord_19_0\\coord_19_0_1.gif",
-    "coord_19_0\\coord_19_0_2.gif",
-    "coord_19_0\\coord_19_0_3.gif",
-    "coord_19_0\\coord_19_0_4.gif"
-  ],
-  "19_1": [
-    "coord_19_1\\coord_19_1_0.gif",
-    "coord_19_1\\coord_19_1_1.gif",
-    "coord_19_1\\coord_19_1_2.gif",
-    "coord_19_1\\coord_19_1_3.gif",
-    "coord_19_1\\coord_19_1_4.gif"
-  ],
-  "19_10": [
-    "coord_19_10\\coord_19_10_0.gif",
-    "coord_19_10\\coord_19_10_1.gif",
-    "coord_19_10\\coord_19_10_2.gif",
-    "coord_19_10\\coord_19_10_3.gif",
-    "coord_19_10\\coord_19_10_4.gif"
-  ],
-  "19_11": [
-    "coord_19_11\\coord_19_11_0.gif",
-    "coord_19_11\\coord_19_11_1.gif",
-    "coord_19_11\\coord_19_11_2.gif",
-    "coord_19_11\\coord_19_11_3.gif",
-    "coord_19_11\\coord_19_11_4.gif"
-  ],
-  "19_12": [
-    "coord_19_12\\coord_19_12_0.gif",
-    "coord_19_12\\coord_19_12_1.gif",
-    "coord_19_12\\coord_19_12_2.gif",
-    "coord_19_12\\coord_19_12_3.gif",
-    "coord_19_12\\coord_19_12_4.gif"
-  ],
-  "19_13": [
-    "coord_19_13\\coord_19_13_0.gif",
-    "coord_19_13\\coord_19_13_1.gif",
-    "coord_19_13\\coord_19_13_2.gif",
-    "coord_19_13\\coord_19_13_3.gif",
-    "coord_19_13\\coord_19_13_4.gif"
-  ],
-  "19_14": [
-    "coord_19_14\\coord_19_14_0.gif",
-    "coord_19_14\\coord_19_14_1.gif",
-    "coord_19_14\\coord_19_14_2.gif",
-    "coord_19_14\\coord_19_14_3.gif",
-    "coord_19_14\\coord_19_14_4.gif"
-  ],
-  "19_15": [
-    "coord_19_15\\coord_19_15_0.gif",
-    "coord_19_15\\coord_19_15_1.gif",
-    "coord_19_15\\coord_19_15_2.gif",
-    "coord_19_15\\coord_19_15_3.gif",
-    "coord_19_15\\coord_19_15_4.gif"
-  ],
-  "19_16": [
-    "coord_19_16\\coord_19_16_0.gif",
-    "coord_19_16\\coord_19_16_1.gif",
-    "coord_19_16\\coord_19_16_2.gif",
-    "coord_19_16\\coord_19_16_3.gif",
-    "coord_19_16\\coord_19_16_4.gif"
-  ],
-  "19_17": [
-    "coord_19_17\\coord_19_17_0.gif",
-    "coord_19_17\\coord_19_17_1.gif",
-    "coord_19_17\\coord_19_17_2.gif",
-    "coord_19_17\\coord_19_17_3.gif",
-    "coord_19_17\\coord_19_17_4.gif"
-  ],
-  "19_18": [
-    "coord_19_18\\coord_19_18_0.gif",
-    "coord_19_18\\coord_19_18_1.gif",
-    "coord_19_18\\coord_19_18_2.gif",
-    "coord_19_18\\coord_19_18_3.gif",
-    "coord_19_18\\coord_19_18_4.gif"
-  ],
-  "19_19": [
-    "coord_19_19\\coord_19_19_0.gif",
-    "coord_19_19\\coord_19_19_1.gif",
-    "coord_19_19\\coord_19_19_2.gif",
-    "coord_19_19\\coord_19_19_3.gif",
-    "coord_19_19\\coord_19_19_4.gif"
-  ],
-  "19_2": [
-    "coord_19_2\\coord_19_2_0.gif",
-    "coord_19_2\\coord_19_2_1.gif",
-    "coord_19_2\\coord_19_2_2.gif",
-    "coord_19_2\\coord_19_2_3.gif",
-    "coord_19_2\\coord_19_2_4.gif"
-  ],
-  "19_20": [
-    "coord_19_20\\coord_19_20_0.gif",
-    "coord_19_20\\coord_19_20_1.gif",
-    "coord_19_20\\coord_19_20_2.gif",
-    "coord_19_20\\coord_19_20_3.gif",
-    "coord_19_20\\coord_19_20_4.gif"
-  ],
-  "19_21": [
-    "coord_19_21\\coord_19_21_0.gif",
-    "coord_19_21\\coord_19_21_1.gif",
-    "coord_19_21\\coord_19_21_2.gif",
-    "coord_19_21\\coord_19_21_3.gif",
-    "coord_19_21\\coord_19_21_4.gif"
-  ],
-  "19_22": [
-    "coord_19_22\\coord_19_22_0.gif",
-    "coord_19_22\\coord_19_22_1.gif",
-    "coord_19_22\\coord_19_22_2.gif",
-    "coord_19_22\\coord_19_22_3.gif",
-    "coord_19_22\\coord_19_22_4.gif"
-  ],
-  "19_23": [
-    "coord_19_23\\coord_19_23_0.gif",
-    "coord_19_23\\coord_19_23_1.gif",
-    "coord_19_23\\coord_19_23_2.gif",
-    "coord_19_23\\coord_19_23_3.gif",
-    "coord_19_23\\coord_19_23_4.gif"
-  ],
-  "19_24": [
-    "coord_19_24\\coord_19_24_0.gif",
-    "coord_19_24\\coord_19_24_1.gif",
-    "coord_19_24\\coord_19_24_2.gif",
-    "coord_19_24\\coord_19_24_3.gif",
-    "coord_19_24\\coord_19_24_4.gif"
-  ],
-  "19_25": [
-    "coord_19_25\\coord_19_25_0.gif",
-    "coord_19_25\\coord_19_25_1.gif",
-    "coord_19_25\\coord_19_25_2.gif",
-    "coord_19_25\\coord_19_25_3.gif",
-    "coord_19_25\\coord_19_25_4.gif"
-  ],
-  "19_26": [
-    "coord_19_26\\coord_19_26_0.gif",
-    "coord_19_26\\coord_19_26_1.gif",
-    "coord_19_26\\coord_19_26_2.gif",
-    "coord_19_26\\coord_19_26_3.gif",
-    "coord_19_26\\coord_19_26_4.gif"
-  ],
-  "19_27": [
-    "coord_19_27\\coord_19_27_0.gif",
-    "coord_19_27\\coord_19_27_1.gif",
-    "coord_19_27\\coord_19_27_2.gif",
-    "coord_19_27\\coord_19_27_3.gif",
-    "coord_19_27\\coord_19_27_4.gif"
-  ],
-  "19_28": [
-    "coord_19_28\\coord_19_28_0.gif",
-    "coord_19_28\\coord_19_28_1.gif",
-    "coord_19_28\\coord_19_28_2.gif",
-    "coord_19_28\\coord_19_28_3.gif",
-    "coord_19_28\\coord_19_28_4.gif"
-  ],
-  "19_29": [
-    "coord_19_29\\coord_19_29_0.gif",
-    "coord_19_29\\coord_19_29_1.gif",
-    "coord_19_29\\coord_19_29_2.gif",
-    "coord_19_29\\coord_19_29_3.gif",
-    "coord_19_29\\coord_19_29_4.gif"
-  ],
-  "19_3": [
-    "coord_19_3\\coord_19_3_0.gif",
-    "coord_19_3\\coord_19_3_1.gif",
-    "coord_19_3\\coord_19_3_2.gif",
-    "coord_19_3\\coord_19_3_3.gif",
-    "coord_19_3\\coord_19_3_4.gif"
-  ],
-  "19_4": [
-    "coord_19_4\\coord_19_4_0.gif",
-    "coord_19_4\\coord_19_4_1.gif",
-    "coord_19_4\\coord_19_4_2.gif",
-    "coord_19_4\\coord_19_4_3.gif",
-    "coord_19_4\\coord_19_4_4.gif"
-  ],
-  "19_5": [
-    "coord_19_5\\coord_19_5_0.gif",
-    "coord_19_5\\coord_19_5_1.gif",
-    "coord_19_5\\coord_19_5_2.gif",
-    "coord_19_5\\coord_19_5_3.gif",
-    "coord_19_5\\coord_19_5_4.gif"
-  ],
-  "19_6": [
-    "coord_19_6\\coord_19_6_0.gif",
-    "coord_19_6\\coord_19_6_1.gif",
-    "coord_19_6\\coord_19_6_2.gif",
-    "coord_19_6\\coord_19_6_3.gif",
-    "coord_19_6\\coord_19_6_4.gif"
-  ],
-  "19_7": [
-    "coord_19_7\\coord_19_7_0.gif",
-    "coord_19_7\\coord_19_7_1.gif",
-    "coord_19_7\\coord_19_7_2.gif",
-    "coord_19_7\\coord_19_7_3.gif",
-    "coord_19_7\\coord_19_7_4.gif"
-  ],
-  "19_8": [
-    "coord_19_8\\coord_19_8_0.gif",
-    "coord_19_8\\coord_19_8_1.gif",
-    "coord_19_8\\coord_19_8_2.gif",
-    "coord_19_8\\coord_19_8_3.gif",
-    "coord_19_8\\coord_19_8_4.gif"
-  ],
-  "19_9": [
-    "coord_19_9\\coord_19_9_0.gif",
-    "coord_19_9\\coord_19_9_1.gif",
-    "coord_19_9\\coord_19_9_2.gif",
-    "coord_19_9\\coord_19_9_3.gif",
-    "coord_19_9\\coord_19_9_4.gif"
-  ],
-  "1_1": [
-    "coord_1_1\\coord_1_1_0.gif"
-  ],
-  "1_10": [
-    "coord_1_10\\coord_1_10_0.gif",
-    "coord_1_10\\coord_1_10_1.gif"
-  ],
-  "1_11": [
-    "coord_1_11\\coord_1_11_0.gif",
-    "coord_1_11\\coord_1_11_1.gif"
-  ],
-  "1_12": [
-    "coord_1_12\\coord_1_12_0.gif",
-    "coord_1_12\\coord_1_12_1.gif"
-  ],
-  "1_13": [
-    "coord_1_13\\coord_1_13_0.gif"
-  ],
-  "1_5": [
-    "coord_1_5\\coord_1_5_0.gif",
-    "coord_1_5\\coord_1_5_1.gif"
-  ],
-  "1_7": [
-    "coord_1_7\\coord_1_7_0.gif",
-    "coord_1_7\\coord_1_7_1.gif"
-  ],
-  "1_9": [
-    "coord_1_9\\coord_1_9_0.gif",
-    "coord_1_9\\coord_1_9_1.gif"
-  ],
-  "2_12": [
-    "coord_2_12\\coord_2_12_0.gif"
-  ],
-  "3_6": [
-    "coord_3_6\\coord_3_6_0.gif"
-  ],
-  "3_7": [
-    "coord_3_7\\coord_3_7_0.gif",
-    "coord_3_7\\coord_3_7_1.gif",
-    "coord_3_7\\coord_3_7_2.gif",
-    "coord_3_7\\coord_3_7_3.gif",
-    "coord_3_7\\coord_3_7_4.gif"
-  ],
-  "3_8": [
-    "coord_3_8\\coord_3_8_0.gif",
-    "coord_3_8\\coord_3_8_1.gif",
-    "coord_3_8\\coord_3_8_2.gif"
-  ],
-  "3_9": [
-    "coord_3_9\\coord_3_9_0.gif",
-    "coord_3_9\\coord_3_9_1.gif"
-  ],
-  "9_14": [
-    "coord_9_14\\coord_9_14_0.gif"
-  ]
+    <script type="text/javascript">
+        // JSON mapping customdata identifiers to GIF paths
+        var gifMapping = {
+    "coord_0_0": [
+        "gifs/coord_0_0/coord_0_0_0.gif",
+        "gifs/coord_0_0/coord_0_0_1.gif",
+        "gifs/coord_0_0/coord_0_0_2.gif",
+        "gifs/coord_0_0/coord_0_0_3.gif"
+    ],
+    "coord_0_1": [
+        "gifs/coord_0_1/coord_0_1_0.gif",
+        "gifs/coord_0_1/coord_0_1_1.gif",
+        "gifs/coord_0_1/coord_0_1_2.gif"
+    ],
+    "coord_0_10": [
+        "gifs/coord_0_10/coord_0_10_0.gif",
+        "gifs/coord_0_10/coord_0_10_1.gif",
+        "gifs/coord_0_10/coord_0_10_2.gif",
+        "gifs/coord_0_10/coord_0_10_3.gif"
+    ],
+    "coord_0_11": [
+        "gifs/coord_0_11/coord_0_11_0.gif",
+        "gifs/coord_0_11/coord_0_11_1.gif",
+        "gifs/coord_0_11/coord_0_11_2.gif",
+        "gifs/coord_0_11/coord_0_11_3.gif"
+    ],
+    "coord_0_12": [
+        "gifs/coord_0_12/coord_0_12_0.gif",
+        "gifs/coord_0_12/coord_0_12_1.gif",
+        "gifs/coord_0_12/coord_0_12_2.gif",
+        "gifs/coord_0_12/coord_0_12_3.gif"
+    ],
+    "coord_0_13": [
+        "gifs/coord_0_13/coord_0_13_0.gif",
+        "gifs/coord_0_13/coord_0_13_1.gif",
+        "gifs/coord_0_13/coord_0_13_2.gif",
+        "gifs/coord_0_13/coord_0_13_3.gif"
+    ],
+    "coord_0_14": [
+        "gifs/coord_0_14/coord_0_14_0.gif",
+        "gifs/coord_0_14/coord_0_14_1.gif",
+        "gifs/coord_0_14/coord_0_14_2.gif",
+        "gifs/coord_0_14/coord_0_14_3.gif"
+    ],
+    "coord_0_15": [
+        "gifs/coord_0_15/coord_0_15_0.gif",
+        "gifs/coord_0_15/coord_0_15_1.gif",
+        "gifs/coord_0_15/coord_0_15_2.gif",
+        "gifs/coord_0_15/coord_0_15_3.gif"
+    ],
+    "coord_0_16": [
+        "gifs/coord_0_16/coord_0_16_0.gif",
+        "gifs/coord_0_16/coord_0_16_1.gif",
+        "gifs/coord_0_16/coord_0_16_2.gif",
+        "gifs/coord_0_16/coord_0_16_3.gif"
+    ],
+    "coord_0_17": [
+        "gifs/coord_0_17/coord_0_17_0.gif",
+        "gifs/coord_0_17/coord_0_17_1.gif",
+        "gifs/coord_0_17/coord_0_17_2.gif",
+        "gifs/coord_0_17/coord_0_17_3.gif"
+    ],
+    "coord_0_18": [
+        "gifs/coord_0_18/coord_0_18_0.gif",
+        "gifs/coord_0_18/coord_0_18_1.gif",
+        "gifs/coord_0_18/coord_0_18_2.gif",
+        "gifs/coord_0_18/coord_0_18_3.gif"
+    ],
+    "coord_0_19": [
+        "gifs/coord_0_19/coord_0_19_0.gif",
+        "gifs/coord_0_19/coord_0_19_1.gif",
+        "gifs/coord_0_19/coord_0_19_2.gif",
+        "gifs/coord_0_19/coord_0_19_3.gif"
+    ],
+    "coord_0_2": [
+        "gifs/coord_0_2/coord_0_2_0.gif",
+        "gifs/coord_0_2/coord_0_2_1.gif",
+        "gifs/coord_0_2/coord_0_2_2.gif",
+        "gifs/coord_0_2/coord_0_2_3.gif"
+    ],
+    "coord_0_20": [
+        "gifs/coord_0_20/coord_0_20_0.gif",
+        "gifs/coord_0_20/coord_0_20_1.gif",
+        "gifs/coord_0_20/coord_0_20_2.gif",
+        "gifs/coord_0_20/coord_0_20_3.gif"
+    ],
+    "coord_0_21": [
+        "gifs/coord_0_21/coord_0_21_0.gif",
+        "gifs/coord_0_21/coord_0_21_1.gif",
+        "gifs/coord_0_21/coord_0_21_2.gif",
+        "gifs/coord_0_21/coord_0_21_3.gif"
+    ],
+    "coord_0_22": [
+        "gifs/coord_0_22/coord_0_22_0.gif",
+        "gifs/coord_0_22/coord_0_22_1.gif",
+        "gifs/coord_0_22/coord_0_22_2.gif",
+        "gifs/coord_0_22/coord_0_22_3.gif"
+    ],
+    "coord_0_23": [
+        "gifs/coord_0_23/coord_0_23_0.gif",
+        "gifs/coord_0_23/coord_0_23_1.gif",
+        "gifs/coord_0_23/coord_0_23_2.gif",
+        "gifs/coord_0_23/coord_0_23_3.gif"
+    ],
+    "coord_0_24": [
+        "gifs/coord_0_24/coord_0_24_0.gif",
+        "gifs/coord_0_24/coord_0_24_1.gif",
+        "gifs/coord_0_24/coord_0_24_2.gif",
+        "gifs/coord_0_24/coord_0_24_3.gif"
+    ],
+    "coord_0_25": [
+        "gifs/coord_0_25/coord_0_25_0.gif",
+        "gifs/coord_0_25/coord_0_25_1.gif",
+        "gifs/coord_0_25/coord_0_25_2.gif",
+        "gifs/coord_0_25/coord_0_25_3.gif"
+    ],
+    "coord_0_26": [
+        "gifs/coord_0_26/coord_0_26_0.gif",
+        "gifs/coord_0_26/coord_0_26_1.gif",
+        "gifs/coord_0_26/coord_0_26_2.gif",
+        "gifs/coord_0_26/coord_0_26_3.gif"
+    ],
+    "coord_0_27": [
+        "gifs/coord_0_27/coord_0_27_0.gif",
+        "gifs/coord_0_27/coord_0_27_1.gif",
+        "gifs/coord_0_27/coord_0_27_2.gif",
+        "gifs/coord_0_27/coord_0_27_3.gif"
+    ],
+    "coord_0_28": [
+        "gifs/coord_0_28/coord_0_28_0.gif",
+        "gifs/coord_0_28/coord_0_28_1.gif",
+        "gifs/coord_0_28/coord_0_28_2.gif",
+        "gifs/coord_0_28/coord_0_28_3.gif"
+    ],
+    "coord_0_29": [
+        "gifs/coord_0_29/coord_0_29_0.gif",
+        "gifs/coord_0_29/coord_0_29_1.gif",
+        "gifs/coord_0_29/coord_0_29_2.gif",
+        "gifs/coord_0_29/coord_0_29_3.gif"
+    ],
+    "coord_0_3": [
+        "gifs/coord_0_3/coord_0_3_0.gif",
+        "gifs/coord_0_3/coord_0_3_1.gif",
+        "gifs/coord_0_3/coord_0_3_2.gif",
+        "gifs/coord_0_3/coord_0_3_3.gif"
+    ],
+    "coord_0_4": [
+        "gifs/coord_0_4/coord_0_4_0.gif"
+    ],
+    "coord_0_5": [
+        "gifs/coord_0_5/coord_0_5_0.gif",
+        "gifs/coord_0_5/coord_0_5_1.gif",
+        "gifs/coord_0_5/coord_0_5_2.gif"
+    ],
+    "coord_0_6": [
+        "gifs/coord_0_6/coord_0_6_0.gif",
+        "gifs/coord_0_6/coord_0_6_1.gif",
+        "gifs/coord_0_6/coord_0_6_2.gif",
+        "gifs/coord_0_6/coord_0_6_3.gif"
+    ],
+    "coord_0_7": [
+        "gifs/coord_0_7/coord_0_7_0.gif",
+        "gifs/coord_0_7/coord_0_7_1.gif",
+        "gifs/coord_0_7/coord_0_7_2.gif",
+        "gifs/coord_0_7/coord_0_7_3.gif"
+    ],
+    "coord_0_8": [
+        "gifs/coord_0_8/coord_0_8_0.gif",
+        "gifs/coord_0_8/coord_0_8_1.gif",
+        "gifs/coord_0_8/coord_0_8_2.gif"
+    ],
+    "coord_0_9": [
+        "gifs/coord_0_9/coord_0_9_0.gif",
+        "gifs/coord_0_9/coord_0_9_1.gif",
+        "gifs/coord_0_9/coord_0_9_2.gif",
+        "gifs/coord_0_9/coord_0_9_3.gif"
+    ],
+    "coord_11_14": [
+        "gifs/coord_11_14/coord_11_14_0.gif"
+    ],
+    "coord_13_7": [
+        "gifs/coord_13_7/coord_13_7_0.gif"
+    ],
+    "coord_19_0": [
+        "gifs/coord_19_0/coord_19_0_0.gif",
+        "gifs/coord_19_0/coord_19_0_1.gif",
+        "gifs/coord_19_0/coord_19_0_2.gif"
+    ],
+    "coord_19_1": [
+        "gifs/coord_19_1/coord_19_1_0.gif",
+        "gifs/coord_19_1/coord_19_1_1.gif",
+        "gifs/coord_19_1/coord_19_1_2.gif",
+        "gifs/coord_19_1/coord_19_1_3.gif"
+    ],
+    "coord_19_10": [
+        "gifs/coord_19_10/coord_19_10_0.gif",
+        "gifs/coord_19_10/coord_19_10_1.gif",
+        "gifs/coord_19_10/coord_19_10_2.gif",
+        "gifs/coord_19_10/coord_19_10_3.gif",
+        "gifs/coord_19_10/coord_19_10_4.gif"
+    ],
+    "coord_19_11": [
+        "gifs/coord_19_11/coord_19_11_0.gif",
+        "gifs/coord_19_11/coord_19_11_1.gif",
+        "gifs/coord_19_11/coord_19_11_2.gif",
+        "gifs/coord_19_11/coord_19_11_3.gif",
+        "gifs/coord_19_11/coord_19_11_4.gif"
+    ],
+    "coord_19_12": [
+        "gifs/coord_19_12/coord_19_12_0.gif",
+        "gifs/coord_19_12/coord_19_12_1.gif",
+        "gifs/coord_19_12/coord_19_12_2.gif",
+        "gifs/coord_19_12/coord_19_12_3.gif",
+        "gifs/coord_19_12/coord_19_12_4.gif",
+        "gifs/coord_19_12/coord_19_12_5.gif"
+    ],
+    "coord_19_13": [
+        "gifs/coord_19_13/coord_19_13_0.gif",
+        "gifs/coord_19_13/coord_19_13_1.gif",
+        "gifs/coord_19_13/coord_19_13_2.gif"
+    ],
+    "coord_19_14": [
+        "gifs/coord_19_14/coord_19_14_0.gif",
+        "gifs/coord_19_14/coord_19_14_1.gif"
+    ],
+    "coord_19_15": [
+        "gifs/coord_19_15/coord_19_15_0.gif",
+        "gifs/coord_19_15/coord_19_15_1.gif"
+    ],
+    "coord_19_16": [
+        "gifs/coord_19_16/coord_19_16_0.gif",
+        "gifs/coord_19_16/coord_19_16_1.gif"
+    ],
+    "coord_19_17": [
+        "gifs/coord_19_17/coord_19_17_0.gif"
+    ],
+    "coord_19_18": [
+        "gifs/coord_19_18/coord_19_18_0.gif"
+    ],
+    "coord_19_19": [
+        "gifs/coord_19_19/coord_19_19_0.gif",
+        "gifs/coord_19_19/coord_19_19_1.gif",
+        "gifs/coord_19_19/coord_19_19_2.gif",
+        "gifs/coord_19_19/coord_19_19_3.gif"
+    ],
+    "coord_19_2": [
+        "gifs/coord_19_2/coord_19_2_0.gif",
+        "gifs/coord_19_2/coord_19_2_1.gif",
+        "gifs/coord_19_2/coord_19_2_2.gif",
+        "gifs/coord_19_2/coord_19_2_3.gif",
+        "gifs/coord_19_2/coord_19_2_4.gif"
+    ],
+    "coord_19_20": [
+        "gifs/coord_19_20/coord_19_20_0.gif",
+        "gifs/coord_19_20/coord_19_20_1.gif",
+        "gifs/coord_19_20/coord_19_20_2.gif",
+        "gifs/coord_19_20/coord_19_20_3.gif",
+        "gifs/coord_19_20/coord_19_20_4.gif"
+    ],
+    "coord_19_21": [
+        "gifs/coord_19_21/coord_19_21_0.gif",
+        "gifs/coord_19_21/coord_19_21_1.gif",
+        "gifs/coord_19_21/coord_19_21_2.gif",
+        "gifs/coord_19_21/coord_19_21_3.gif"
+    ],
+    "coord_19_22": [
+        "gifs/coord_19_22/coord_19_22_0.gif",
+        "gifs/coord_19_22/coord_19_22_1.gif",
+        "gifs/coord_19_22/coord_19_22_2.gif"
+    ],
+    "coord_19_23": [
+        "gifs/coord_19_23/coord_19_23_0.gif",
+        "gifs/coord_19_23/coord_19_23_1.gif",
+        "gifs/coord_19_23/coord_19_23_2.gif",
+        "gifs/coord_19_23/coord_19_23_3.gif"
+    ],
+    "coord_19_24": [
+        "gifs/coord_19_24/coord_19_24_0.gif",
+        "gifs/coord_19_24/coord_19_24_1.gif",
+        "gifs/coord_19_24/coord_19_24_2.gif"
+    ],
+    "coord_19_25": [
+        "gifs/coord_19_25/coord_19_25_0.gif",
+        "gifs/coord_19_25/coord_19_25_1.gif",
+        "gifs/coord_19_25/coord_19_25_2.gif"
+    ],
+    "coord_19_26": [
+        "gifs/coord_19_26/coord_19_26_0.gif",
+        "gifs/coord_19_26/coord_19_26_1.gif"
+    ],
+    "coord_19_27": [
+        "gifs/coord_19_27/coord_19_27_0.gif",
+        "gifs/coord_19_27/coord_19_27_1.gif"
+    ],
+    "coord_19_28": [
+        "gifs/coord_19_28/coord_19_28_0.gif",
+        "gifs/coord_19_28/coord_19_28_1.gif",
+        "gifs/coord_19_28/coord_19_28_2.gif"
+    ],
+    "coord_19_29": [
+        "gifs/coord_19_29/coord_19_29_0.gif",
+        "gifs/coord_19_29/coord_19_29_1.gif",
+        "gifs/coord_19_29/coord_19_29_2.gif"
+    ],
+    "coord_19_3": [
+        "gifs/coord_19_3/coord_19_3_0.gif",
+        "gifs/coord_19_3/coord_19_3_1.gif",
+        "gifs/coord_19_3/coord_19_3_2.gif",
+        "gifs/coord_19_3/coord_19_3_3.gif",
+        "gifs/coord_19_3/coord_19_3_4.gif",
+        "gifs/coord_19_3/coord_19_3_5.gif",
+        "gifs/coord_19_3/coord_19_3_6.gif",
+        "gifs/coord_19_3/coord_19_3_7.gif"
+    ],
+    "coord_19_4": [
+        "gifs/coord_19_4/coord_19_4_0.gif",
+        "gifs/coord_19_4/coord_19_4_1.gif",
+        "gifs/coord_19_4/coord_19_4_2.gif"
+    ],
+    "coord_19_5": [
+        "gifs/coord_19_5/coord_19_5_0.gif",
+        "gifs/coord_19_5/coord_19_5_1.gif",
+        "gifs/coord_19_5/coord_19_5_2.gif",
+        "gifs/coord_19_5/coord_19_5_3.gif",
+        "gifs/coord_19_5/coord_19_5_4.gif",
+        "gifs/coord_19_5/coord_19_5_5.gif",
+        "gifs/coord_19_5/coord_19_5_6.gif",
+        "gifs/coord_19_5/coord_19_5_7.gif"
+    ],
+    "coord_19_6": [
+        "gifs/coord_19_6/coord_19_6_0.gif",
+        "gifs/coord_19_6/coord_19_6_1.gif",
+        "gifs/coord_19_6/coord_19_6_2.gif",
+        "gifs/coord_19_6/coord_19_6_3.gif",
+        "gifs/coord_19_6/coord_19_6_4.gif",
+        "gifs/coord_19_6/coord_19_6_5.gif"
+    ],
+    "coord_19_7": [
+        "gifs/coord_19_7/coord_19_7_0.gif",
+        "gifs/coord_19_7/coord_19_7_1.gif",
+        "gifs/coord_19_7/coord_19_7_2.gif",
+        "gifs/coord_19_7/coord_19_7_3.gif",
+        "gifs/coord_19_7/coord_19_7_4.gif",
+        "gifs/coord_19_7/coord_19_7_5.gif",
+        "gifs/coord_19_7/coord_19_7_6.gif",
+        "gifs/coord_19_7/coord_19_7_7.gif"
+    ],
+    "coord_19_8": [
+        "gifs/coord_19_8/coord_19_8_0.gif",
+        "gifs/coord_19_8/coord_19_8_1.gif",
+        "gifs/coord_19_8/coord_19_8_2.gif",
+        "gifs/coord_19_8/coord_19_8_3.gif",
+        "gifs/coord_19_8/coord_19_8_4.gif",
+        "gifs/coord_19_8/coord_19_8_5.gif",
+        "gifs/coord_19_8/coord_19_8_6.gif"
+    ],
+    "coord_19_9": [
+        "gifs/coord_19_9/coord_19_9_0.gif",
+        "gifs/coord_19_9/coord_19_9_1.gif",
+        "gifs/coord_19_9/coord_19_9_2.gif",
+        "gifs/coord_19_9/coord_19_9_3.gif",
+        "gifs/coord_19_9/coord_19_9_4.gif",
+        "gifs/coord_19_9/coord_19_9_5.gif",
+        "gifs/coord_19_9/coord_19_9_6.gif",
+        "gifs/coord_19_9/coord_19_9_7.gif"
+    ],
+    "coord_1_0": [
+        "gifs/coord_1_0/coord_1_0_0.gif"
+    ],
+    "coord_1_1": [
+        "gifs/coord_1_1/coord_1_1_0.gif"
+    ],
+    "coord_1_10": [
+        "gifs/coord_1_10/coord_1_10_0.gif"
+    ],
+    "coord_1_11": [
+        "gifs/coord_1_11/coord_1_11_0.gif",
+        "gifs/coord_1_11/coord_1_11_1.gif"
+    ],
+    "coord_1_12": [
+        "gifs/coord_1_12/coord_1_12_0.gif",
+        "gifs/coord_1_12/coord_1_12_1.gif",
+        "gifs/coord_1_12/coord_1_12_2.gif",
+        "gifs/coord_1_12/coord_1_12_3.gif"
+    ],
+    "coord_1_13": [
+        "gifs/coord_1_13/coord_1_13_0.gif",
+        "gifs/coord_1_13/coord_1_13_1.gif"
+    ],
+    "coord_1_14": [
+        "gifs/coord_1_14/coord_1_14_0.gif"
+    ],
+    "coord_1_15": [
+        "gifs/coord_1_15/coord_1_15_0.gif"
+    ],
+    "coord_1_16": [
+        "gifs/coord_1_16/coord_1_16_0.gif"
+    ],
+    "coord_1_17": [
+        "gifs/coord_1_17/coord_1_17_0.gif"
+    ],
+    "coord_1_18": [
+        "gifs/coord_1_18/coord_1_18_0.gif"
+    ],
+    "coord_1_5": [
+        "gifs/coord_1_5/coord_1_5_0.gif",
+        "gifs/coord_1_5/coord_1_5_1.gif"
+    ],
+    "coord_1_6": [
+        "gifs/coord_1_6/coord_1_6_0.gif",
+        "gifs/coord_1_6/coord_1_6_1.gif",
+        "gifs/coord_1_6/coord_1_6_2.gif"
+    ],
+    "coord_1_7": [
+        "gifs/coord_1_7/coord_1_7_0.gif",
+        "gifs/coord_1_7/coord_1_7_1.gif"
+    ],
+    "coord_1_9": [
+        "gifs/coord_1_9/coord_1_9_0.gif",
+        "gifs/coord_1_9/coord_1_9_1.gif"
+    ],
+    "coord_2_12": [
+        "gifs/coord_2_12/coord_2_12_0.gif"
+    ],
+    "coord_3_6": [
+        "gifs/coord_3_6/coord_3_6_0.gif"
+    ],
+    "coord_3_7": [
+        "gifs/coord_3_7/coord_3_7_0.gif"
+    ],
+    "coord_3_8": [
+        "gifs/coord_3_8/coord_3_8_0.gif"
+    ],
+    "coord_3_9": [
+        "gifs/coord_3_9/coord_3_9_0.gif"
+    ],
+    "coord_9_14": [
+        "gifs/coord_9_14/coord_9_14_0.gif"
+    ]
 };
+        const plotElement = document.querySelector('.plotly-graph-div')
+        
+        plotElement.on('plotly_hover', function(data) {
+            const custom = data.points[0].customdata;
 
-    const grid = document.getElementById("grid");
-    const gifPanel = document.getElementById("gif-panel");
 
-    
-let lockedCell = null;
+            // Load GIFs (if needed)
+            const gifNames = gifMapping[custom];
+            const container = document.getElementById("gif-display");
+            container.innerHTML = "";
+            if (gifNames) {
+                gifNames.forEach(path => {
+                    const img = document.createElement("img");
+                    img.src = path;
+                    container.appendChild(img);
+                });
+            } else {
+                container.textContent = "No GIFs found for: " + custom;
+            }
+        });
+        plotElement.on('plotly_click', function(data) {
+            const custom = data.points[0].customdata;
 
-for (let row = 0; row < 30; row++) {
-  for (let col = 0; col < 20; col++) {
-    const cell = document.createElement("div");
-    cell.className = "cell";
-    cell.dataset.coord = `${col}_${row}`;
-    cell.title = `(${col}, ${row})`;
 
-    const key = `${col}_${row}`;
-    const gifs = gifData[key] || [];
+            // Load GIFs (if needed)
+            const gifNames = gifMapping[custom];
+            const container = document.getElementById("gif-display");
+            container.innerHTML = "";
+            if (gifNames) {
+                gifNames.forEach(path => {
+                    const img = document.createElement("img");
+                    img.src = path;
+                    container.appendChild(img);
+                });
+            } else {
+                container.textContent = "No GIFs found for: " + custom;
+            }
+        });
+</script>
+</div>
 
-    if (gifs.length) {
-      const dotsContainer = document.createElement("div");
-      dotsContainer.className = "dots";
-      gifs.slice(0, 9).forEach(() => {
-        const dot = document.createElement("div");
-        dot.className = "dot";
-        dotsContainer.appendChild(dot);
-      });
-      cell.appendChild(dotsContainer);
-    }
+<div id="hover-instruction" style="margin-top: 20px; text-align: center; font-family: sans-serif; font-size: 16px; color: rgb(0, 0, 0);">
+    Hover/tap a point to see the creatures.
+<!-- GIF display container -->
+<div id="gif-display", ></div>
+<!-- <div id="debug-hover" style="margin-top: 10px; color: lime; font-family: monospace;"></div> -->
 
-    cell.addEventListener("mouseenter", () => {
-      if (lockedCell) return;
-      displayGIFs(col, row);
-    });
 
-    cell.addEventListener("click", (e) => {
-      e.stopPropagation(); // Prevent triggering the document click handler
-
-      if (lockedCell) {
-        // Unlock the cell if a locked cell exists
-        lockedCell.classList.remove("locked");
-        lockedCell = null;
-        gifPanel.innerHTML = `<h3>Hover over a cell to view the individuals</h3>`;
-      } else {
-        // Lock the clicked cell if no cell is locked
-        lockedCell = cell;
-        lockedCell.classList.add("locked");
-        displayGIFs(col, row);
-      }
-    });
-
-    grid.appendChild(cell);
-  }
-}
-
-function displayGIFs(x, y) {
-  const key = `${x}_${y}`;
-  const gifs = gifData[key] || [];
-
-  gifPanel.innerHTML = `<h3>GIFs for (${x}, ${y})</h3>`;
-
-  const gifGrid = document.createElement("div");
-  gifGrid.className = "gif-grid";
-
-  gifs.forEach((src) => {
-    const img = document.createElement("img");
-    img.src = `gifs/${src}`;
-    gifGrid.appendChild(img);
-  });
-
-  gifPanel.appendChild(gifGrid);
-}
-
-// Unlock the cell if clicking anywhere outside the grid or gif panel
-document.addEventListener("click", (e) => {
-  // Check if the click is outside the grid or panel to unlock the cell
-  if (lockedCell && !gifPanel.contains(e.target) && !grid.contains(e.target)) {
-    lockedCell.classList.remove("locked");
-    lockedCell = null;
-    gifPanel.innerHTML = `<h3>Hover over a cell to view the individuals</h3>`;
-  }
-});
-  </script>
 </body>
 </html>
