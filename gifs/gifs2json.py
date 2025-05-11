@@ -16,7 +16,7 @@ def generate_gif_mapping(root_dir='.'):
                 if f.endswith('.gif')
             ])
             if gif_files:
-                mapping[entry] = [os.path.join(root_dir, entry, f).replace('\\', '/') for f in gif_files]
+                mapping[entry] = [os.path.join("gifs", entry, f).replace('\\', '/') for f in gif_files]
 
     return mapping
 
